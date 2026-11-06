@@ -1,0 +1,13 @@
+# 原始照片（相機原檔，不上傳 GitHub）
+/開場/
+/精選/
+/系列/
+/關於/
+
+# 系統檔
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 交給 Claude 處理用的原始素材
+/影片縮圖.png
