@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://erich-5245.github.io/sitemap.xml
