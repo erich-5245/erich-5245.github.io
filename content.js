@@ -453,6 +453,31 @@ const C = {
       ] }
   ],
 
+  /* ---------- 足跡地圖（顯示在「系列」頁上方）----------
+     每個點：名稱、經緯度（lon 經度, lat 緯度）、連到哪些系列；
+     side 是文字放在點的哪一邊：r 右、l 左、t 上、b 下；
+     group 是手機上太擠時會合併成一個點的分組 */
+  places: [
+    { zh: '北京', en: 'Beijing', lon: 116.40, lat: 39.90, series: ['beijing'], side: 'r' },
+    { zh: '西安', en: 'Xi\u2019an', lon: 108.94, lat: 34.34, series: ['xian-2024', 'xian-2025'], side: 'l' },
+    { zh: '武當山', en: 'Wudang', lon: 111.00, lat: 32.40, series: ['wudang'], side: 'r' },
+    { zh: '成都', en: 'Chengdu', lon: 104.07, lat: 30.66, series: ['chengdu'], side: 'r' },
+    { zh: '福州', en: 'Fuzhou', lon: 119.30, lat: 26.07, series: ['quanzhou-fuzhou'], side: 'r', group: 'fj' },
+    { zh: '泉州', en: 'Quanzhou', lon: 118.59, lat: 24.91, series: ['quanzhou-fuzhou', 'xiamen-quanzhou'], side: 'r', group: 'fj' },
+    { zh: '廈門', en: 'Xiamen', lon: 118.09, lat: 24.48, series: ['xiamen', 'xiamen-quanzhou'], side: 'l', group: 'fj' },
+    { zh: '台灣', en: 'Taiwan', lon: 121.20, lat: 24.50, series: ['singles'], side: 'r', home: true },
+    { zh: '首爾', en: 'Seoul', lon: 126.98, lat: 37.57, series: ['seoul'], side: 'l' },
+    { zh: '大邱', en: 'Daegu', lon: 128.60, lat: 35.87, series: ['daegu'], side: 'l', group: 'kr' },
+    { zh: '慶州', en: 'Gyeongju', lon: 129.22, lat: 35.86, series: ['gyeongju'], side: 'r', group: 'kr' },
+    { zh: '釜山', en: 'Busan', lon: 129.08, lat: 35.18, series: ['busan'], side: 'b', group: 'kr' },
+    { zh: '四國', en: 'Shikoku', lon: 133.30, lat: 33.75, series: ['shikoku'], side: 'b' },
+    { zh: '北陸', en: 'Hokuriku', lon: 137.10, lat: 36.55, series: ['hokuriku'], side: 't' }
+  ],
+  groups: {
+    fj: { zh: '福建', en: 'Fujian', side: 'l' },
+    kr: { zh: '慶尚道', en: 'Gyeongsang', side: 'r' }
+  },
+
   /* ---------- 經歷（顯示在「關於」頁） ---------- */
   experience: [
     { time: '2024–2026', title: { zh: '梅竹書院', en: 'Meizhu Academy' },

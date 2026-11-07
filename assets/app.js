@@ -153,10 +153,64 @@ function allPage(){
   return `${nav(true)}<div class="wrap">
     <a class="back" href="#home">${T(UI.back)}</a>
     <div class="ptitle"><h1>${T(UI.allTitle)}<em>${L==='zh'?'City series':''}</em></h1><p>${T(UI.allSub)}</p></div>
+    ${mapBlock()}
+    <div class="sechead" style="margin-top:64px"><h3 style="font-size:30px">${L==='zh'?'Series<small>系列</small>':'Series'}</h3><span class="mono">${cities().length} ${L==='zh'?'個系列':'series'}</span></div>
     <div class="series">${cities().map(seriesCard).join('')}</div>
     ${C.series.filter(isLoose).map(s=>`<div class="sechead" style="margin-top:72px"><h3 style="font-size:30px">${L==='zh'?'Singles<small>單張</small>':'Singles'}</h3><span class="mono">${T(UI.looseSub)}</span></div><div class="series">${seriesCard(s)}</div>`).join('')}
     <footer class="mono">© 2026 ${T(C.name)}</footer></div>`;
 }
+
+/* 足跡地圖：陸地輪廓來自 assets/map.js，地點來自 content.js 的 places */
+const mapNarrow=()=>innerWidth<700;
+function mapPoints(){
+  const P=C.places||[];if(!mapNarrow())return P.map(p=>({...p}));
+  const out=[],seen={};
+  P.forEach(p=>{
+    if(!p.group){out.push({...p});return}
+    if(seen[p.group])return;seen[p.group]=1;
+    const mem=P.filter(q=>q.group===p.group),g=(C.groups||{})[p.group]||{};
+    out.push({zh:g.zh||mem.map(q=>q.zh).join('・'),en:g.en||mem.map(q=>q.en).join(' · '),side:g.side||'r',
+      lon:mem.reduce((a,q)=>a+q.lon,0)/mem.length,lat:mem.reduce((a,q)=>a+q.lat,0)/mem.length,
+      series:[...new Set(mem.flatMap(q=>q.series))],members:mem});
+  });
+  return out;
+}
+function mapXY(lon,lat){const M=window.MAPDATA,r=Math.PI/180,my=a=>Math.log(Math.tan(Math.PI/4+a*r/2));
+  return [((lon-M.L0)*r*M.s)/M.w*100,((my(M.B1)-my(lat))*M.s)/M.h*100]}
+function mapBlock(){
+  const M=window.MAPDATA;if(!M||!C.places)return '';
+  const pts=mapPoints();
+  const dots=pts.map((p,i)=>{const [x,y]=mapXY(p.lon,p.lat);
+    return `<button class="mpt s-${p.side||'r'}${p.home?' home':''}" data-mp="${i}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%" aria-label="${f(T(p))}"><i></i><span>${f(T(p))}</span></button>`}).join('');
+  return `<div class="sechead fsec"><h3 style="font-size:30px">${L==='zh'?'Footprints<small>足跡</small>':'Footprints'}</h3><span class="mono">${L==='zh'?'點一個地方，看那裡的照片':'Pick a place to see its photos'}</span></div>
+    <div class="fwrap" data-fmap><div class="fmap" style="aspect-ratio:${M.w}/${M.h}"><svg viewBox="0 0 ${M.w} ${M.h}" aria-hidden="true" preserveAspectRatio="none"><path d="${M.d}"/></svg>${dots}</div><div class="mpop" hidden></div></div>`;
+}
+function mapPop(btn){
+  const box=btn.closest('[data-fmap]'),pop=box.querySelector('.mpop'),p=mapPoints()[+btn.dataset.mp];
+  const list=p.series.map(id=>C.series.find(s=>s.id===id)).filter(Boolean);
+  pop.innerHTML=`<div class="mpop-h">${f(T(p))}${p.members?`<span class="mono">${p.members.map(q=>f(T(q))).join(' · ')}</span>`:''}</div>`+
+    list.map(se=>`<a class="mpop-i" href="#s-${se.id}">${ph('',thumb(coverOf(se)),null,T(se.name))}<span><b>${f(T(se.name))}</b><span class="mono">${se.year?f(se.year)+' · ':''}${se.photos.length} ${T(UI.photos)}</span></span></a>`).join('');
+  pop.hidden=false;box.querySelectorAll('.mpt.on').forEach(b=>b.classList.remove('on'));btn.classList.add('on');pop.dataset.for=btn.dataset.mp;
+  if(mapNarrow()){pop.style.left=pop.style.top='';return}
+  const bw=box.clientWidth,bh=box.clientHeight,x=btn.offsetLeft,y=btn.offsetTop,pw=pop.offsetWidth,phh=pop.offsetHeight;
+  let left=x+14,top=y-phh/2;if(left+pw>bw-4)left=x-14-pw;if(left<4)left=Math.max(4,Math.min(bw-pw-4,x-pw/2));
+  if(top<4)top=4;if(top+phh>bh-4)top=Math.max(4,bh-phh-4);
+  pop.style.left=left+'px';pop.style.top=top+'px';
+}
+function mapHide(box){const pop=box&&box.querySelector('.mpop');if(pop){pop.hidden=true;delete pop.dataset.for}box&&box.querySelectorAll('.mpt.on').forEach(b=>b.classList.remove('on'))}
+const canHover=()=>matchMedia('(hover:hover)').matches;
+document.addEventListener('mouseover',e=>{if(!canHover())return;const b=e.target.closest('.mpt');if(b){mapPop(b);return}
+  const box=document.querySelector('[data-fmap]');if(box&&!e.target.closest('[data-fmap]'))mapHide(box)});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.mpt');
+  if(b){const p=mapPoints()[+b.dataset.mp],pop=b.closest('[data-fmap]').querySelector('.mpop');
+    if(p.series.length===1&&(canHover()||pop.dataset.for===b.dataset.mp)){location.hash='s-'+p.series[0];return}
+    if(pop.dataset.for===b.dataset.mp&&!canHover()){mapHide(b.closest('[data-fmap]'));return}
+    mapPop(b);return}
+  if(!e.target.closest('.mpop'))mapHide(document.querySelector('[data-fmap]'));
+});
+let mapWasNarrow=mapNarrow();
+addEventListener('resize',()=>{const n=mapNarrow();if(n!==mapWasNarrow){mapWasNarrow=n;const box=document.querySelector('[data-fmap]');if(box){const sec=box.previousElementSibling;const t=document.createElement('div');t.innerHTML=mapBlock();sec.replaceWith(t.children[0]);box.replaceWith(t.children[0])}}});
 /* Pinterest 排法：放進最短的欄，再微裁每欄最後一張讓底部切齊（最多裁 15%） */
 function layoutMasonry(){
   document.querySelectorAll('[data-mason]').forEach(el=>{

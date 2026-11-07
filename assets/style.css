@@ -270,3 +270,24 @@ footer{padding-block:80px 40px;color:var(--dim)}
   .lb:not(.panel) .cap2{--m:below;position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));visibility:hidden}
 }
 .lb:not(.panel) .cap2.on{visibility:visible}
+
+/* footprint map on the series page: land silhouette in SVG, places as HTML buttons on top (stay readable at any width) */
+.fwrap{position:relative;width:min(100%,calc(70vh * 1000 / 622));max-width:100%;margin:0 auto 8px}
+.fmap{position:relative;width:100%;max-width:100%;user-select:none}
+.fmap svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fmap path{fill:var(--ink-3);stroke:#2a2a2e;stroke-width:.6;vector-effect:non-scaling-stroke}
+.mpt{position:absolute;width:0;height:0;padding:0;border:0;background:none;cursor:pointer;color:var(--paper)}
+.mpt::before{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px}
+.mpt i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,106,.18);transition:transform .2s,box-shadow .2s}
+.mpt.home i{background:transparent;border:1.5px solid var(--gold);box-shadow:none}
+.mpt span{position:absolute;white-space:nowrap;font-family:var(--f-zh-title);font-size:13px;letter-spacing:.08em;color:#cfcdc8;text-shadow:0 1px 3px #000,0 0 8px #000;pointer-events:none;transition:color .2s}
+.mpt.s-r span{left:10px;top:-9px}.mpt.s-l span{right:10px;top:-9px}.mpt.s-t span{left:50%;transform:translateX(-50%);bottom:9px}.mpt.s-b span{left:50%;transform:translateX(-50%);top:8px}
+.mpt:hover i,.mpt.on i,.mpt:focus-visible i{transform:scale(1.5);box-shadow:0 0 0 6px rgba(200,169,106,.25)}
+.mpt:hover span,.mpt.on span{color:var(--gold)}
+.mpop{position:absolute;z-index:3;width:250px;max-width:calc(100% - 8px);background:rgba(18,18,20,.96);border:1px solid var(--line);padding:12px;display:grid;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.mpop-h{font-family:var(--f-zh-title);font-size:15px;letter-spacing:.1em;display:grid;gap:4px}
+.mpop-i{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center}
+.mpop-i .ph{aspect-ratio:4/5;width:56px}
+.mpop-i b{display:block;font-family:var(--f-zh-title);font-weight:600;font-size:14px;letter-spacing:.08em;margin-bottom:4px}
+.mpop-i:hover b{color:var(--gold)}
+@media (max-width:699px){.mpt span{font-size:12px}.mpop{position:static;width:auto;max-width:none;margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}.mpop-h{grid-column:1/-1}}
