@@ -275,7 +275,7 @@ footer{padding-block:80px 40px;color:var(--dim)}
 .fwrap{position:relative;width:min(100%,calc(70vh * 1000 / 622));max-width:100%;margin:0 auto 8px}
 .fmap{position:relative;width:100%;max-width:100%;user-select:none}
 .fmap svg{position:absolute;inset:0;width:100%;height:100%;display:block}
-.fmap path{fill:var(--ink-3);stroke:#2a2a2e;stroke-width:.6;vector-effect:non-scaling-stroke}
+.fmap path.land{fill:var(--ink-3);stroke:#2a2a2e;stroke-width:.6;vector-effect:non-scaling-stroke}
 .mpt{position:absolute;width:0;height:0;padding:0;border:0;background:none;cursor:pointer;color:var(--paper)}
 .mpt::before{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px}
 .mpt i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,106,.18);transition:transform .2s,box-shadow .2s}
@@ -291,3 +291,63 @@ footer{padding-block:80px 40px;color:var(--dim)}
 .mpop-i b{display:block;font-family:var(--f-zh-title);font-weight:600;font-size:14px;letter-spacing:.08em;margin-bottom:4px}
 .mpop-i:hover b{color:var(--gold)}
 @media (max-width:699px){.mpt span{font-size:12px}.mpop{position:static;width:auto;max-width:none;margin-top:14px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}.mpop-h{grid-column:1/-1}}
+
+/* footprint map plays as a timeline: the map stays pinned while you scroll, trips draw in from Taiwan in date order */
+.fscroll{position:relative;height:calc(100vh + var(--steps) * 26vh)}
+.fstick{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));min-height:calc(100vh - 96px);display:flex;flex-direction:column;justify-content:center}
+.fmap .arc{fill:none;stroke:var(--gold);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(200,169,106,.35))}
+.mpt{transition:opacity .45s}
+.mpt.dim{opacity:.12;pointer-events:none}
+.fdate{position:absolute;left:3%;top:5%;z-index:2;display:grid;gap:6px;pointer-events:none}
+.fdate span{font-size:clamp(22px,3.4vw,44px);letter-spacing:.06em;color:var(--paper)}
+.fdate small{font-size:12px;letter-spacing:.14em;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){.fscroll{height:auto}.fstick{position:static;min-height:0}}
+/* photos and series cards ease in as they enter the screen */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@media (max-width:699px){.fdate{position:static;display:flex;align-items:baseline;gap:14px;margin:0 0 12px}.fdate span{font-size:26px}}
+
+/* ---------- page transitions (View Transitions) ---------- */
+.nav{view-transition-name:nav}
+.sp-body{view-transition-name:spbody}
+::view-transition-group(*){animation-duration:.55s;animation-timing-function:cubic-bezier(.22,.7,.18,1)}
+/* default page change: old fades, new rises in */
+::view-transition-old(root){animation:vt-fade-out .25s ease both}
+::view-transition-new(root){animation:vt-rise-in .5s cubic-bezier(.22,.7,.18,1) .05s both}
+/* the cover grows from the card into the left half; keep it cropped, never stretched */
+::view-transition-group(cover){animation-duration:.7s;z-index:4}
+::view-transition-old(cover),::view-transition-new(cover){height:100%;width:100%;object-fit:cover;overflow:hidden}
+::view-transition-old(cover){animation:vt-fade-out .35s ease both}
+::view-transition-new(cover){animation:vt-fade-in .45s ease both}
+/* opening a series: the right half drifts in after the cover lands */
+:root[data-vt="enter"] ::view-transition-old(root){animation:vt-fade-out .2s ease both}
+:root[data-vt="enter"] ::view-transition-new(root){animation:vt-fade-in .4s ease .25s both}
+:root[data-vt="enter"] ::view-transition-new(spbody){animation:vt-slide-in .75s cubic-bezier(.22,.7,.18,1) .35s both}
+/* leaving a series: the right half slips away, the cover shrinks back to its card */
+:root[data-vt="leave"] ::view-transition-old(spbody){animation:vt-slide-out .35s ease both}
+:root[data-vt="leave"] ::view-transition-new(root){animation:vt-fade-in .45s ease .12s both}
+/* next series: covers cross-fade in place, the photo column turns like a page */
+:root[data-vt="next"] ::view-transition-old(spbody){animation:vt-slide-out-l .35s ease both}
+:root[data-vt="next"] ::view-transition-new(spbody){animation:vt-slide-in .6s cubic-bezier(.22,.7,.18,1) .15s both}
+:root[data-vt="next"] ::view-transition-old(cover){animation:vt-fade-out .5s ease both}
+:root[data-vt="next"] ::view-transition-new(cover){animation:vt-fade-in .6s ease both}
+/* lightbox: the thumbnail zooms into the viewer and back */
+:root[data-vt="lb"] ::view-transition-group(lbimg){animation-duration:.5s;z-index:60}
+:root[data-vt="lb"] ::view-transition-old(lbimg),:root[data-vt="lb"] ::view-transition-new(lbimg){height:100%;width:100%;object-fit:cover}
+:root[data-vt="lb"] ::view-transition-old(root){animation:none}
+:root[data-vt="lb"] ::view-transition-new(root){animation:vt-fade-in .4s ease both}
+:root[data-vt="ver"] ::view-transition-old(root),:root[data-vt="ver"] ::view-transition-new(root){animation:none}
+:root[data-vt="ver"] ::view-transition-group(wtitle),:root[data-vt="ver"] ::view-transition-group(wfacts),:root[data-vt="ver"] ::view-transition-group(wlink){animation-duration:.45s}
+:root[data-vt="ver"] ::view-transition-old(wtitle),:root[data-vt="ver"] ::view-transition-old(wfacts),:root[data-vt="ver"] ::view-transition-old(wlink){animation:vt-drop-out .22s ease both}
+:root[data-vt="ver"] ::view-transition-new(wtitle),:root[data-vt="ver"] ::view-transition-new(wfacts),:root[data-vt="ver"] ::view-transition-new(wlink){animation:vt-rise-in .5s cubic-bezier(.22,.7,.18,1) .12s both}
+:root[data-vt="ver"] ::view-transition-new(wfacts){animation-delay:.2s}
+:root[data-vt="ver"] ::view-transition-new(wlink){animation-delay:.28s}
+@keyframes vt-drop-out{to{opacity:0;transform:translateY(-8px)}}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-fade-in{from{opacity:0}}
+@keyframes vt-rise-in{from{opacity:0;transform:translateY(18px)}}
+@keyframes vt-slide-in{from{opacity:0;transform:translateX(60px)}}
+@keyframes vt-slide-out{to{opacity:0;transform:translateX(60px)}}
+@keyframes vt-slide-out-l{to{opacity:0;transform:translateX(-60px)}}
+@media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
