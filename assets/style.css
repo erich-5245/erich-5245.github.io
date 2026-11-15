@@ -365,3 +365,7 @@ footer{padding-block:80px 40px;color:var(--dim)}
 .chnote{margin:0 0 18px;color:#cfcdc8;font-size:14px;max-width:38em}
 .mpop-trip{display:block;margin-top:2px;color:var(--dim)}
 .scard .meta{flex-wrap:wrap}
+
+/* lightbox prev/next slides the photo and its text; nothing may spill outside the viewer while it moves */
+.lb{overflow:hidden}
+.lbghost{will-change:transform,opacity}
