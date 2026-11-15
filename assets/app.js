@@ -21,7 +21,10 @@ const UI={
   legend:{zh:'這是框架預覽。<b>〔金色括號〕</b>是要填的文字，灰色方塊是照片位置，左下角標著檔案要放哪。',en:'Framework preview. <b>[Gold brackets]</b> are text to fill; grey boxes are photo slots labelled with their file path.'}
 };
 const tones=['#232326','#29292c','#1f1f21','#2d2c2a','#262628','#222224'];
-const ph=(shape,path,tone,alt)=>`<div class="ph ${shape}" data-path="${path}" style="--tone:${tone||tones[(path.length*7)%tones.length]}"><img src="${path}" alt="${(alt||'').replace(/"/g,'&quot;')}" loading="lazy" decoding="async" onerror="this.remove()"></div>`;
+/* 網頁用 WebP（檔案小約四成）；找不到 WebP 時自動退回 JPG */
+const WP=p=>typeof p==='string'?p.replace(/^(photos\/.+)\.jpe?g$/i,'$1.webp'):p;
+const FB=`onerror="if(!this.dataset.fb&&/\\.webp$/.test(this.src)){this.dataset.fb=1;this.src=this.src.replace(/\\.webp$/,'.jpg')}else this.remove()"`;
+const ph=(shape,path,tone,alt)=>`<div class="ph ${shape}" data-path="${path}" style="--tone:${tone||tones[(path.length*7)%tones.length]}"><img src="${WP(path)}" alt="${(alt||'').replace(/"/g,'&quot;')}" loading="lazy" decoding="async" ${FB}></div>`;
 const thumb=p=>/^photos\/(series|works|films)\//.test(p)?p.replace(/^photos\//,'photos/thumbs/'):p;
 const altOf=m=>m?T(m.caption||m.title||m.place||''):'';
 const shapeOf=x=>x&&x.w&&x.h?(x.h>x.w?'p':'l'):((x&&x.s)||'l');
@@ -55,7 +58,7 @@ let verIdx=0;
 function workBlock(w){
   const v=w.versions[verIdx]||w.versions[0];
   return `<div class="work">
-    <button class="workimg" data-lb="work" data-i="0"><img src="${w.img}" alt="${T(w.versions[0].title)}"></button>
+    <button class="workimg" data-lb="work" data-i="0"><img src="${WP(w.img)}" ${FB} alt="${T(w.versions[0].title)}"></button>
     <div class="worktext">
       <div class="tabs" role="tablist">${w.versions.map((x,i)=>`<button role="tab" aria-selected="${i===verIdx}" class="tab ${i===verIdx?'on':''}" data-ver="${i}">${x.title.zh}</button>`).join('')}</div>
       <p class="mono" style="margin:0 0 6px">${w.versions.length} ${L==='zh'?'個版本・同一張照片':'entries · one photograph'}</p>
@@ -110,7 +113,7 @@ function seriesPage(id){
   const s=C.series[i], nx=C.series[(i+1)%C.series.length];
   return `${nav(true)}<div class="split">
     <aside class="sp-cover">
-      <img src="${coverOf(s)}" alt="${s.name.zh}" style="object-position:${s.coverPos||'50%'} 50%">
+      <img src="${WP(coverOf(s))}" ${FB} alt="${s.name.zh}" style="object-position:${s.coverPos||'50%'} 50%">
       <div class="sp-cap">
         <div class="mono">${s.year?f(s.year)+' · ':''}${s.photos.length} ${T(UI.photos)}</div>
         <h1>${s.name.zh}<em>${s.name.en}</em></h1>
@@ -245,7 +248,7 @@ document.addEventListener('mouseover',e=>{if(!canHover())return;const b=e.target
 document.addEventListener('click',e=>{
   const b=e.target.closest('.mpt');
   if(b){const p=mapPoints()[+b.dataset.mp],pop=b.closest('[data-fmap]').querySelector('.mpop');
-    if(p.series.length===1&&(canHover()||pop.dataset.for===b.dataset.mp)){location.hash='s-'+p.series[0];return}
+    if(p.series.length===1&&(canHover()||pop.dataset.for===b.dataset.mp)){go('s-'+p.series[0]);return}
     if(pop.dataset.for===b.dataset.mp&&!canHover()){mapHide(b.closest('[data-fmap]'));return}
     mapPop(b);return}
   if(!e.target.closest('.mpop'))mapHide(document.querySelector('[data-fmap]'));
@@ -305,7 +308,7 @@ function pathFor(key,i){
 function openLb(key,i){lbList=shapesFor(key);lbIdx=i;lbKey=key;
   const th=document.querySelector(`[data-lb="${key}"][data-i="${i}"] img`);
   if(!canVT()||!th){drawLb();return}
-  const full=new Image();full.src=lbList[i]==='img'?C.works[0].img:pathFor(key,i);
+  const full=new Image();full.src=WP(lbList[i]==='img'?C.works[0].img:pathFor(key,i));
   Promise.race([full.decode().catch(()=>{}),new Promise(r=>setTimeout(r,350))]).then(()=>{
     vtClear();vtName(th,'lbimg');document.documentElement.dataset.vt='lb';
     const t=document.startViewTransition(()=>{vtClear();drawLb();vtName(document.querySelector('#lb .stage img'),'lbimg')});
@@ -328,7 +331,7 @@ function drawLb(){
   closeLb();const d=document.createElement('div');d.id='lb';
   const sh=lbList[lbIdx],m=metaFor(lbKey,lbIdx),panel=lbKey==='picks';
   d.className='lb'+(panel?' panel':'');
-  const body=`<img src="${sh==='img'?C.works[0].img:pathFor(lbKey,lbIdx)}" alt="">`;
+  const body=`<img src="${WP(sh==='img'?C.works[0].img:pathFor(lbKey,lbIdx))}" ${FB} alt="">`;
   let src='';
   if(panel){const se=m.from&&C.series.find(x=>x.id===m.from);if(se)src=`<p style="margin:20px 0 0"><a class="lbsrc" href="#s-${se.id}">${T(UI.from)}：${sname(se)} →</a></p>`}
   const info=panel
@@ -351,7 +354,7 @@ function drawLb(){
     d.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY},{passive:true});
     d.addEventListener('touchend',e=>{if(sx===null)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;
       if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3){lbIdx=(lbIdx+(dx<0?1:-1)+lbList.length)%lbList.length;drawLb()}});
-    [1,-1].forEach(k=>{const j=(lbIdx+k+lbList.length)%lbList.length;if(lbList[j]!=='img'){const im=new Image();im.src=pathFor(lbKey,j)}});
+    [1,-1].forEach(k=>{const j=(lbIdx+k+lbList.length)%lbList.length;if(lbList[j]!=='img'){const im=new Image();im.src=WP(pathFor(lbKey,j))}});
   }
   const im0=d.querySelector('.stage img');if(im0)im0.alt=altOf(metaFor(lbKey,lbIdx));
   document.body.appendChild(d);
@@ -370,8 +373,18 @@ document.addEventListener('keydown',e=>{if(!document.getElementById('lb'))return
 
 /* router */
 let pendingScroll=null;
+/* 每個系列另有獨立網頁 s/<id>/（給 Google 和分享預覽用），在那裡時 START 會是 's-<id>' */
+let onSub=!!window.START;
+const ROOT=new URL('./',document.baseURI).href+(location.protocol==='file:'?'index.html':'');
+const route=()=>location.hash?location.hash.slice(1):(onSub?window.START:'home');
+function go(h){
+  if(!onSub){location.hash=h;return}
+  try{history.pushState(null,'',ROOT+'#'+h);onSub=false;navigate()}catch(_){location.href=ROOT+'#'+h}
+}
+document.addEventListener('click',e=>{if(!onSub)return;const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();go(a.getAttribute('href').slice(1))},true);
+addEventListener('popstate',()=>{onSub=!!window.START&&location.href.split('#')[0]!==ROOT.split('#')[0];navigate()});
 function render(){
-  const h=(location.hash||'#home').slice(1);
+  const h=route();lastRoute=h;
   let html;
   if(h.startsWith('s-'))html=seriesPage(h.slice(2));
   else if(h==='series')html=allPage();
@@ -392,7 +405,7 @@ function render(){
 }
 document.addEventListener('click',e=>{
   const go=e.target.closest('[data-go]');
-  if(go){const id=go.dataset.go;const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});else{pendingScroll=id;location.hash='home'}return}
+  if(go){const id=go.dataset.go;const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});else{pendingScroll=id;go('home')}return}
   if(e.target.closest('#lang')){L=L==='zh'?'en':'zh';try{localStorage.setItem('lang',L)}catch(_){}const y=window.scrollY;render();window.scrollTo(0,y);return}
   const vb=e.target.closest('[data-ver]');if(vb){if(+vb.dataset.ver===verIdx)return;verIdx=+vb.dataset.ver;
     const swap=()=>{const el=document.querySelector('.work');if(el)el.outerHTML=workBlock(C.works[0])};
@@ -407,13 +420,13 @@ document.addEventListener('click',e=>{
 });
 /* 換頁動畫（瀏覽器支援 View Transitions 才有；不支援或開了「減少動態效果」就直接切換） */
 const canVT=()=>!!document.startViewTransition&&!reduceMotion();
-let vtSrc=null,prevHash=location.hash;
+let vtSrc=null,lastRoute=null,navTo=null;
 document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#s-"]');vtSrc=a?a.querySelector('.ph'):null},true);
 const vtClear=()=>document.querySelectorAll('[data-vtn]').forEach(el=>{el.style.viewTransitionName='';delete el.dataset.vtn});
 const vtName=(el,n)=>{if(el){el.style.viewTransitionName=n;el.dataset.vtn=1}};
 function navigate(){
-  const from=(prevHash||'#home').slice(1),to=(location.hash||'#home').slice(1);prevHash=location.hash;
-  if(!canVT()){render();return}
+  const from=lastRoute||'home',to=route();if(to===navTo||(from===to&&document.getElementById('app').children.length))return;navTo=to;
+  if(!canVT()){render();navTo=null;return}
   const fs=from.startsWith('s-'),ts=to.startsWith('s-');
   const kind=fs&&ts?'next':ts?'enter':fs?'leave':'page';
   const root=document.documentElement;root.dataset.vt=kind;
@@ -422,14 +435,14 @@ function navigate(){
   if(kind==='leave')vtName(document.querySelector('.sp-cover'),'cover');
   if(kind==='next')vtName(document.querySelector('.sp-cover'),'cover');
   const t=document.startViewTransition(()=>{
-    vtClear();render();
+    vtClear();render();navTo=null;
     if(kind==='enter'||kind==='next')vtName(document.querySelector('.sp-cover'),'cover');
     if(kind==='leave'){const card=document.querySelector(`.scard[href="#${from}"] .ph`);
       if(card){vtName(card,'cover');const r=card.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)scrollTo(0,scrollY+r.top-(innerHeight-r.height)/2)}}
   });
-  t.finished.finally(()=>{vtClear();delete root.dataset.vt;vtSrc=null});
+  t.finished.finally(()=>{vtClear();delete root.dataset.vt;vtSrc=null;navTo=null});
 }
 window.addEventListener('hashchange',navigate);
 render();
 
-if(C.analytics){const g=document.createElement('script');g.async=true;g.src='https://gc.zgo.at/count.js';g.dataset.goatcounter=`https://${C.analytics}.goatcounter.com/count`;g.dataset.goatcounterSettings='{"no_onload":true}';g.onload=()=>{const h=(location.hash||'#home').slice(1);window.goatcounter.count({path:'/'+(h==='home'?'':h),title:document.title})};document.head.appendChild(g)}
+if(C.analytics){const g=document.createElement('script');g.async=true;g.src='https://gc.zgo.at/count.js';g.dataset.goatcounter=`https://${C.analytics}.goatcounter.com/count`;g.dataset.goatcounterSettings='{"no_onload":true}';g.onload=()=>{const h=route();window.goatcounter.count({path:'/'+(h==='home'?'':h),title:document.title})};document.head.appendChild(g)}
