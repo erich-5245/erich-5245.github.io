@@ -351,3 +351,17 @@ footer{padding-block:80px 40px;color:var(--dim)}
 @keyframes vt-slide-out{to{opacity:0;transform:translateX(60px)}}
 @keyframes vt-slide-out-l{to{opacity:0;transform:translateX(-60px)}}
 @media (prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* trip chapters on a series page: a small table of contents, then one dated section per day or city */
+.chtoc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 36px}
+.chtoc button{display:inline-flex;align-items:baseline;gap:8px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;font-family:var(--f-zh-title);font-size:13px;letter-spacing:.06em;color:var(--paper);background:transparent;cursor:pointer;transition:border-color .2s,color .2s}
+.chtoc button .mono{font-size:11px;color:var(--mute)}
+.chtoc button:hover{border-color:var(--gold);color:var(--gold)}
+.chap{scroll-margin-top:calc(88px + env(safe-area-inset-top,0px));margin:0 0 56px}
+.chhead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px;margin-bottom:14px}
+.chhead h3{margin:0;font-family:var(--f-zh-title);font-weight:600;font-size:22px;letter-spacing:.1em;flex:1 1 auto;min-width:0}
+.chhead h3 em{font-family:var(--f-display);font-weight:400;font-size:.8em;color:var(--mute);letter-spacing:.02em;margin-left:10px}
+.chhead .mono{color:var(--mute)}
+.chnote{margin:0 0 18px;color:#cfcdc8;font-size:14px;max-width:38em}
+.mpop-trip{display:block;margin-top:2px;color:var(--dim)}
+.scard .meta{flex-wrap:wrap}

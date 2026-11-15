@@ -120,319 +120,385 @@ const C = {
       place: { zh: '台北大巨蛋', en: 'Taipei Dome' }, exif: {"camera": "Canon EOS 700D", "focal": "89mm", "aperture": "f/4.5", "shutter": "1/200s", "iso": "6400"} }
   ],
 
-  /* ---------- 城市系列（新到舊） ----------
-     id：英文小寫，也是資料夾名稱 photos/series/<id>/
-     cover：封面，建議用直的（不寫就用第一張）；coverPos：橫圖當封面時，裁切的左右位置（0% 最左、100% 最右）
-     photos：照片依拍攝時間排序；想加地點就在那張加上 place: { zh: '…', en: '…' }
-       一句簡述：caption: { zh: '…', en: '…' }，會顯示在看大圖時的下方，也當作圖片的替代文字 */
+  /* ---------- 旅程系列（新到舊） ----------
+     一趟旅程一個系列，裡面依日期分成章節（chapters）。
+     id：網址用的英文名稱；cover：封面檔名，coverDir：封面所在的資料夾 photos/series/<資料夾>/
+     每個章節：key（英文代號）、date（日期）、name（中英名稱）、dir（照片所在資料夾）、note（選填的一句介紹）、photos（照片，依拍攝時間）
+       一句簡述：caption: { zh: '…', en: '…' }，會顯示在看大圖時的下方，也當作圖片的替代文字
+     舊的城市代號（例如 busan、beijing）會自動對應到所在的旅程和章節，舊連結不會壞 */
   series: [
-    { id: 'quanzhou-fuzhou', name: { zh: '泉州・福州', en: 'Quanzhou & Fuzhou' }, year: '2026.10', cover: 'dsc00021.jpg',
+    { id: 'quanzhou-fuzhou', name: { zh: '泉州・福州', en: 'Quanzhou & Fuzhou' }, year: '2026.10', cover: 'dsc00021.jpg', coverDir: 'quanzhou-fuzhou',
       intro: { zh: '梅竹書院第六屆，帶著 GR IIIx 在泉州與福州之間走走拍拍。', en: 'Meizhu Academy, sixth edition: wandering between Quanzhou and Fuzhou with a GR IIIx.' },
-      photos: [
-        { file: 'dsc09993.jpg', caption: { zh: '木桌上的 GR IIIx，這趟旅程的隨身相機', en: 'A GR IIIx on a wooden table, my everyday camera for this trip' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/60s", "iso": "1600"} },
-        { file: 'dsc00020.jpg', caption: { zh: '傍晚點亮的鏤空燈塔裝置，襯著漸暗的天空', en: 'An openwork lighthouse installation lit at dusk against a darkening sky' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "50mm", "aperture": "f/3.2", "shutter": "1/125s", "iso": "3200"} },
-        { file: 'r0006515.jpg', caption: { zh: '夜色裡遠遠亮著燈的城堡造型建築', en: 'A castle-like building glowing far off in the night' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/8s", "iso": "640"} },
-        { file: 'r0006517.jpg', caption: { zh: '色彩繁複的彩繪玻璃天花板，滿版的花紋', en: 'An ornate stained-glass ceiling covered edge to edge in patterns' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/160s", "iso": "640"} },
-        { file: 'dsc00021.jpg', caption: { zh: '從暗房間的窗框望出去，海面與跨海大橋', en: 'Through a dark window frame: the sea and a cross-sea bridge' }, w: 1333, h: 2000, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "160"} },
-        { file: 'r0006528.jpg', caption: { zh: '陽台欄杆後方，遠處的城堡尖塔與圓頂', en: 'Behind a balcony railing, distant castle spires and a dome' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/11", "shutter": "1/250s", "iso": "640"} },
-        { file: 'r0006537.jpg', caption: { zh: '藍天白雲下的開元寺東塔，一旁是老街店舖', en: 'The East Pagoda of Kaiyuan Temple under blue sky, old-street shops beside it' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/14", "shutter": "1/250s", "iso": "640"} },
-        { file: 'r0006545.jpg', caption: { zh: '從路口望向西塔，電線和樹梢橫過天空', en: 'Looking up the street at the West Pagoda, wires and treetops across the sky' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/200s", "iso": "640"} },
-        { file: 'r0006554.jpg', caption: { zh: '閩台緣博物館展櫃裡的一口古銅鐘', en: 'An ancient bronze bell in a case at the Museum of Fujian–Taiwan Kinship' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/6s", "iso": "640"} },
-        { file: 'r0006568.jpg', caption: { zh: '「四十多年了，放我回家吧！」', en: '“Forty-some years now. Let me go home!”' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/80s", "iso": "640"} },
-        { file: 'r0006571.jpg', caption: { zh: '藍天下的閩台緣博物館', en: 'The Museum of Fujian–Taiwan Kinship under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/14", "shutter": "1/200s", "iso": "640"} },
-        { file: 'dsc00023.jpg', caption: { zh: '午後的海灣，遠方橫著一長條跨海大橋', en: 'An afternoon bay with a long cross-sea bridge on the horizon' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/1600s", "iso": "50"} },
-        { file: 'dsc00030.jpg', caption: { zh: '逆光的海面閃著銀光，大橋成了一道剪影', en: 'Backlit water flashing silver, the bridge reduced to a silhouette' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/4", "shutter": "1/5000s", "iso": "50"} },
-        { file: 'r0006580.jpg', caption: { zh: '藍天下，紅白相間的弧形洋樓轉角', en: 'A curved red-and-white colonial building corner under blue sky' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/320s", "iso": "640"} },
-        { file: 'r0006581.jpg', caption: { zh: '只拍水面，細細的波紋鋪滿整個畫面', en: 'Nothing but water, fine ripples filling the frame' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/13", "shutter": "1/320s", "iso": "640"} },
-        { file: 'dsc00034.jpg', caption: { zh: '橘紅色的夕陽，正落在對岸的天際線上', en: 'An orange-red sun setting on the far shore’s skyline' }, w: 1027, h: 1541, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/4", "shutter": "1/125s", "iso": "80"} },
-        { file: 'r0006624.jpg', caption: { zh: '夜晚的海灘上，一座被打亮的海螺雕塑', en: 'A lit conch-shell sculpture on the beach at night' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/6s", "iso": "640"} },
-        { file: 'r0006625.jpg', caption: { zh: '靠近看海螺雕塑的曲線與孔洞，背後是夜海', en: 'Up close, the conch’s curves and holes against the night sea' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/10s", "iso": "640"} },
-        { file: 'r0006680.jpg', caption: { zh: '瑞幸咖啡門口發光的藍色鹿頭招牌', en: 'Luckin Coffee’s glowing blue deer-head sign' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/5.6", "shutter": "1/160s", "iso": "640"} },
-        { file: 'r0006695.jpg', caption: { zh: '高樓之間，路燈桿上掛著兩面五星旗', en: 'Between towers, two Chinese flags on a lamppost' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/160s", "iso": "640"} },
-        { file: 'r0006714.jpg', caption: { zh: '寥寥無幾的候機大廳，被福州的夕陽填滿', en: 'A nearly empty departure hall, filled with the Fuzhou sunset' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/8", "shutter": "1/200s", "iso": "640"} }
+      chapters: [
+        { key: 'd1', date: '10.09', name: { zh: '第一晚', en: 'First night' }, dir: 'quanzhou-fuzhou',
+          photos: [
+            { file: 'dsc09993.jpg', caption: { zh: '木桌上的 GR IIIx，這趟旅程的隨身相機', en: 'A GR IIIx on a wooden table, my everyday camera for this trip' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/60s", "iso": "1600"} },
+            { file: 'dsc00020.jpg', caption: { zh: '傍晚點亮的鏤空燈塔裝置，襯著漸暗的天空', en: 'An openwork lighthouse installation lit at dusk against a darkening sky' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "50mm", "aperture": "f/3.2", "shutter": "1/125s", "iso": "3200"} },
+            { file: 'r0006515.jpg', caption: { zh: '夜色裡遠遠亮著燈的城堡造型建築', en: 'A castle-like building glowing far off in the night' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/8s", "iso": "640"} },
+            { file: 'r0006517.jpg', caption: { zh: '色彩繁複的彩繪玻璃天花板，滿版的花紋', en: 'An ornate stained-glass ceiling covered edge to edge in patterns' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/160s", "iso": "640"} }
+          ] },
+        { key: 'quanzhou', date: '10.10', name: { zh: '泉州', en: 'Quanzhou' }, dir: 'quanzhou-fuzhou', cover: 'r0006537.jpg',
+          photos: [
+            { file: 'dsc00021.jpg', caption: { zh: '從暗房間的窗框望出去，海面與跨海大橋', en: 'Through a dark window frame: the sea and a cross-sea bridge' }, w: 1333, h: 2000, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "160"} },
+            { file: 'r0006528.jpg', caption: { zh: '陽台欄杆後方，遠處的城堡尖塔與圓頂', en: 'Behind a balcony railing, distant castle spires and a dome' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/11", "shutter": "1/250s", "iso": "640"} },
+            { file: 'r0006537.jpg', caption: { zh: '藍天白雲下的開元寺東塔，一旁是老街店舖', en: 'The East Pagoda of Kaiyuan Temple under blue sky, old-street shops beside it' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/14", "shutter": "1/250s", "iso": "640"} },
+            { file: 'r0006545.jpg', caption: { zh: '從路口望向西塔，電線和樹梢橫過天空', en: 'Looking up the street at the West Pagoda, wires and treetops across the sky' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/200s", "iso": "640"} },
+            { file: 'r0006554.jpg', caption: { zh: '閩台緣博物館展櫃裡的一口古銅鐘', en: 'An ancient bronze bell in a case at the Museum of Fujian–Taiwan Kinship' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/6s", "iso": "640"} },
+            { file: 'r0006568.jpg', caption: { zh: '「四十多年了，放我回家吧！」', en: '“Forty-some years now. Let me go home!”' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/80s", "iso": "640"} },
+            { file: 'r0006571.jpg', caption: { zh: '藍天下的閩台緣博物館', en: 'The Museum of Fujian–Taiwan Kinship under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/14", "shutter": "1/200s", "iso": "640"} },
+            { file: 'dsc00023.jpg', caption: { zh: '午後的海灣，遠方橫著一長條跨海大橋', en: 'An afternoon bay with a long cross-sea bridge on the horizon' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/1600s", "iso": "50"} },
+            { file: 'dsc00030.jpg', caption: { zh: '逆光的海面閃著銀光，大橋成了一道剪影', en: 'Backlit water flashing silver, the bridge reduced to a silhouette' }, w: 2000, h: 1333, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/4", "shutter": "1/5000s", "iso": "50"} },
+            { file: 'r0006580.jpg', caption: { zh: '藍天下，紅白相間的弧形洋樓轉角', en: 'A curved red-and-white colonial building corner under blue sky' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/320s", "iso": "640"} },
+            { file: 'r0006581.jpg', caption: { zh: '只拍水面，細細的波紋鋪滿整個畫面', en: 'Nothing but water, fine ripples filling the frame' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/13", "shutter": "1/320s", "iso": "640"} },
+            { file: 'dsc00034.jpg', caption: { zh: '橘紅色的夕陽，正落在對岸的天際線上', en: 'An orange-red sun setting on the far shore’s skyline' }, w: 1027, h: 1541, exif: {"camera": "Sony A7C II", "focal": "70mm", "aperture": "f/4", "shutter": "1/125s", "iso": "80"} },
+            { file: 'r0006624.jpg', caption: { zh: '夜晚的海灘上，一座被打亮的海螺雕塑', en: 'A lit conch-shell sculpture on the beach at night' }, w: 1333, h: 2000, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/6s", "iso": "640"} },
+            { file: 'r0006625.jpg', caption: { zh: '靠近看海螺雕塑的曲線與孔洞，背後是夜海', en: 'Up close, the conch’s curves and holes against the night sea' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/10s", "iso": "640"} }
+          ] },
+        { key: 'fuzhou', date: '10.11', name: { zh: '福州', en: 'Fuzhou' }, dir: 'quanzhou-fuzhou', cover: 'r0006714.jpg',
+          photos: [
+            { file: 'r0006680.jpg', caption: { zh: '瑞幸咖啡門口發光的藍色鹿頭招牌', en: 'Luckin Coffee’s glowing blue deer-head sign' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/5.6", "shutter": "1/160s", "iso": "640"} },
+            { file: 'r0006695.jpg', caption: { zh: '高樓之間，路燈桿上掛著兩面五星旗', en: 'Between towers, two Chinese flags on a lamppost' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/10", "shutter": "1/160s", "iso": "640"} },
+            { file: 'r0006714.jpg', caption: { zh: '寥寥無幾的候機大廳，被福州的夕陽填滿', en: 'A nearly empty departure hall, filled with the Fuzhou sunset' }, w: 2000, h: 1333, exif: {"camera": "Ricoh GR IIIx", "focal": "40mm", "aperture": "f/8", "shutter": "1/200s", "iso": "640"} }
+          ] }
       ] },
-
-    { id: 'shikoku', name: { zh: '四國', en: 'Shikoku' }, year: '2026.06', cover: 'dsc03257.jpg',
+    { id: 'shikoku', name: { zh: '四國', en: 'Shikoku' }, year: '2026.06', cover: 'dsc03257.jpg', coverDir: 'shikoku',
       intro: { zh: '和家人走過香川、德島、愛媛與小豆島，把旅途裡的片刻放慢來看。', en: 'With my family through Kagawa, Tokushima, Ehime and Shōdoshima, slowing the journey down.' },
-      photos: [
-        { file: 'dsc03106.jpg', caption: { zh: '山腳下一台紅色的販賣機', en: 'A red vending machine at the foot of the hill' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/11", "shutter": "1/100s", "iso": "100"} },
-        { file: 'dsc03111.jpg', caption: { zh: '綠蔭下的金刀比羅宮參道，遊客撐著傘往上走', en: 'The shaded approach to Kotohira-gū, visitors climbing under umbrellas' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/10", "shutter": "1/500s", "iso": "640"} },
-        { file: 'dsc03115.jpg', caption: { zh: '石鳥居上的「金」字紋，金刀比羅宮的標誌', en: 'The “金” crest on a stone torii, the mark of Kotohira-gū' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/4", "shutter": "1/250s", "iso": "50"} },
-        { file: 'dsc03129.jpg', caption: { zh: '藍天下飄揚的金刀比羅宮旗幟', en: 'Kotohira-gū banners flying under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "67mm", "aperture": "f/2.8", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03186.jpg', caption: { zh: '掛著「金」字白燈籠的社殿一角', en: 'A corner of the shrine hung with white “金” lanterns' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/1600s", "iso": "800"} },
-        { file: 'dsc03188.jpg', caption: { zh: '樹林環繞的木造社殿與迴廊', en: 'Wooden shrine halls and corridors ringed by forest' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/3200s", "iso": "2000"} },
-        { file: 'dsc03202.jpg', caption: { zh: '兩旁樹蔭夾道的石板參道', en: 'A stone-paved approach lined with shade trees' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "200"} },
-        { file: 'dsc03257.jpg', caption: { zh: '用藤蔓編成的祖谷葛藤橋', en: 'The Iya Kazurabashi, a bridge woven from vines' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "49mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
-        { file: 'dsc03263.jpg', caption: { zh: '從葛藤橋的縫隙往下看，底下是碧綠溪水', en: 'Through gaps in the vine bridge, green water far below' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
-        { file: 'dsc03266.jpg', caption: { zh: '從暗處望向葛藤橋，藤蔓垂在兩側', en: 'The vine bridge seen from the shadows, vines hanging on both sides' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
-        { file: 'dsc03292.jpg', caption: { zh: '大步危峽谷間湍急的溪流', en: 'A rushing stream through the Ōboke Gorge' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/320s", "iso": "100"} },
-        { file: 'dsc03297.jpg', caption: { zh: '白色岩層間翻起浪花的急流', en: 'Whitewater churning between pale rock layers' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "54mm", "aperture": "f/22", "shutter": "1/8s", "iso": "100"} },
-        { file: 'dsc03301.jpg', caption: { zh: '灰白色的岩壁直直落進碧綠河水', en: 'Grey-white cliffs dropping straight into green water' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "57mm", "aperture": "f/4", "shutter": "1/320s", "iso": "50"} },
-        { file: 'dsc03323.jpg', caption: { zh: '遊船駛過大步危峽谷的河面', en: 'A tour boat crossing the river in Ōboke Gorge' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "64"} },
-        { file: 'dsc03360.jpg', caption: { zh: '岩壁上的細瀑匯進翻騰的溪流', en: 'A thin waterfall on the cliff joining the rushing stream' }, w: 1334, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/22", "shutter": "1/6s", "iso": "100"} },
-        { file: 'img_9012.jpg', caption: { zh: '站在岩石上的一隻鸕鶿', en: 'A cormorant standing on a rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/11", "shutter": "1/125s", "iso": "640"} },
-        { file: 'dsc03365.jpg', caption: { zh: '一整面排列整齊的彩色紗線軸', en: 'A whole wall of neatly stacked colorful thread spools' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "400"} },
-        { file: 'dsc03379.jpg', caption: { zh: '近拍線軸，前景清晰、後方漸漸模糊', en: 'Spools up close, sharp in front and softening behind' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/160s", "iso": "640"} },
-        { file: 'dsc03383.jpg', caption: { zh: '暖色的線軸一層層往上疊', en: 'Warm-toned spools stacked layer on layer' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "1600"} },
-        { file: 'dsc03384.jpg', caption: { zh: '線軸小屋裡，唯一一顆燈泡', en: 'The single light bulb in the spool hut' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/1600s", "iso": "1250"} },
-        { file: 'dsc03399.jpg', caption: { zh: '掛在線軸前的糊塗塌客毛巾', en: 'A Gudetama towel hanging in front of the spools' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "67mm", "aperture": "f/2.8", "shutter": "1/320s", "iso": "1250"} },
-        { file: 'dsc03400.jpg', caption: { zh: '掛在線軸前的史努比毛巾', en: 'A Snoopy towel hanging in front of the spools' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "62mm", "aperture": "f/2.8", "shutter": "1/320s", "iso": "1250"} },
-        { file: 'dsc03417.jpg', caption: { zh: '昏黃燈光下，桌上準備烤的肉', en: 'Meat laid out for grilling under warm light' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "50mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "50"} },
-        { file: 'dsc03441.jpg', caption: { zh: '夜裡停在商店街口的計程車', en: 'A taxi parked at the shopping-street entrance at night' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/200s", "iso": "400"} },
-        { file: 'dsc03451.jpg', caption: { zh: '夜裡亮著頭燈的計程車', en: 'A taxi with its headlights on at night' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "640"} },
-        { file: 'dsc03460.jpg', caption: { zh: '商店街裡擠成一排的腳踏車', en: 'Bicycles crammed into a row in the shopping arcade' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/50s", "iso": "500"} },
-        { file: 'dsc03483.jpg', caption: { zh: '樹叢後露出的松山城天守', en: 'Matsuyama Castle’s keep peeking out behind trees' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "69mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03497.jpg', caption: { zh: '松山城的木門後方，石牆與長長的石階', en: 'Past a wooden gate of Matsuyama Castle, stone walls and a long stairway' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "40mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03505.jpg', caption: { zh: '松山城層疊的灰瓦屋頂', en: 'Matsuyama Castle’s layered grey-tiled roofs' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03507.jpg', caption: { zh: '從松山城往下看，整片松山市區', en: 'All of Matsuyama city, seen from the castle' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03511.jpg', caption: { zh: '從暗處斜斜框住的天守一角', en: 'A corner of the keep framed at an angle from the shadows' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "42mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
-        { file: 'img_9016.jpg', caption: { zh: '從牆縫望出去，遠處的摩天輪', en: 'A Ferris wheel in the distance, seen through a gap in the wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "149mm", "aperture": "f/8", "shutter": "1/1000s", "iso": "200"} },
-        { file: 'dsc03538.jpg', caption: { zh: '一整面擺滿的扭蛋機', en: 'A wall packed with capsule-toy machines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "50mm", "aperture": "f/5", "shutter": "1/500s", "iso": "1250"} },
-        { file: 'dsc03539.jpg', caption: { zh: '窗邊掛成一串的橘色娃娃', en: 'A string of orange dolls hanging by the window' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/5", "shutter": "1/500s", "iso": "320"} },
-        { file: 'dsc03589.jpg', caption: { zh: '停在車站月台的路面電車', en: 'A streetcar stopped at the station platform' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "64"} },
-        { file: 'dsc03598.jpg', caption: { zh: '道後溫泉本館的入口與屋簷', en: 'The entrance and eaves of Dōgo Onsen Honkan' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "46mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "125"} },
-        { file: 'dsc03608.jpg', caption: { zh: '街口舉起手機拍照的路人', en: 'A passer-by on a street corner raising a phone to take a photo' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "50"} },
-        { file: 'img_9031.jpg', caption: { zh: '鳥居後方長長的石階，盡頭是紅色樓門', en: 'A long stone stairway beyond a torii, a red gate at the top' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "160mm", "aperture": "f/8", "shutter": "1/200s", "iso": "200"} },
-        { file: 'dsc03620.jpg', caption: { zh: '等紅燈的單車騎士，頭上電線縱橫', en: 'A cyclist waiting at a red light under a web of wires' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "100"} },
-        { file: 'dsc03633.jpg', caption: { zh: '港邊的高塔大樓與碼頭', en: 'A harbor tower and the pier' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "46mm", "aperture": "f/2.8", "shutter": "1/1250s", "iso": "50"} },
-        { file: 'dsc03751.jpg', caption: { zh: '小豆島橄欖公園的希臘風車', en: 'The Greek windmill at Shōdoshima Olive Park' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/4000s", "iso": "50"} },
-        { file: 'dsc03754.jpg', caption: { zh: '沿著海岸彎進小鎮的公路', en: 'A coastal road curving into a small town' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/4000s", "iso": "50"} },
-        { file: 'dsc03793.jpg', caption: { zh: '樹林間的觀景台，遠處是瀨戶內海', en: 'A lookout among the trees, the Seto Inland Sea beyond' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "29mm", "aperture": "f/2.8", "shutter": "1/1000s", "iso": "50"} },
-        { file: 'dsc03829.jpg', caption: { zh: '下午港灣裡停靠的帆船', en: 'Sailboats moored in the harbor in the afternoon' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/6400s", "iso": "64"} },
-        { file: 'dsc03841.jpg', caption: { zh: '池水與松林環繞的日式庭園', en: 'A Japanese garden wrapped in ponds and pines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/2.8", "shutter": "1/800s", "iso": "50"} },
-        { file: 'dsc03844.jpg', caption: { zh: '近看盤曲的松樹枝幹', en: 'Twisting pine branches up close' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "44mm", "aperture": "f/2.8", "shutter": "1/1000s", "iso": "50"} },
-        { file: 'dsc03852.jpg', caption: { zh: '一枝松樹探向平靜的池面', en: 'A pine branch reaching over a still pond' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "63mm", "aperture": "f/2.8", "shutter": "1/2000s", "iso": "50"} },
-        { file: 'dsc03865.jpg', caption: { zh: '荷葉之間開著一朵粉色荷花', en: 'A single pink lotus among the lotus leaves' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/2000s", "iso": "50"} },
-        { file: 'dsc03873.jpg', caption: { zh: '池畔的茶亭與修剪過的松樹', en: 'A teahouse by the pond and clipped pines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "69mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "50"} }
+      chapters: [
+        { key: 'kotohira', date: '6.15', name: { zh: '金刀比羅宮', en: 'Kotohira-gū' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03106.jpg', caption: { zh: '山腳下一台紅色的販賣機', en: 'A red vending machine at the foot of the hill' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/11", "shutter": "1/100s", "iso": "100"} },
+            { file: 'dsc03111.jpg', caption: { zh: '綠蔭下的金刀比羅宮參道，遊客撐著傘往上走', en: 'The shaded approach to Kotohira-gū, visitors climbing under umbrellas' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/10", "shutter": "1/500s", "iso": "640"} },
+            { file: 'dsc03115.jpg', caption: { zh: '石鳥居上的「金」字紋，金刀比羅宮的標誌', en: 'The “金” crest on a stone torii, the mark of Kotohira-gū' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/4", "shutter": "1/250s", "iso": "50"} },
+            { file: 'dsc03129.jpg', caption: { zh: '藍天下飄揚的金刀比羅宮旗幟', en: 'Kotohira-gū banners flying under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "67mm", "aperture": "f/2.8", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03186.jpg', caption: { zh: '掛著「金」字白燈籠的社殿一角', en: 'A corner of the shrine hung with white “金” lanterns' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/1600s", "iso": "800"} },
+            { file: 'dsc03188.jpg', caption: { zh: '樹林環繞的木造社殿與迴廊', en: 'Wooden shrine halls and corridors ringed by forest' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/3200s", "iso": "2000"} },
+            { file: 'dsc03202.jpg', caption: { zh: '兩旁樹蔭夾道的石板參道', en: 'A stone-paved approach lined with shade trees' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "200"} }
+          ] },
+        { key: 'iya', date: '6.16', name: { zh: '祖谷・大步危', en: 'Iya & Ōboke' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03257.jpg', caption: { zh: '用藤蔓編成的祖谷葛藤橋', en: 'The Iya Kazurabashi, a bridge woven from vines' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "49mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
+            { file: 'dsc03263.jpg', caption: { zh: '從葛藤橋的縫隙往下看，底下是碧綠溪水', en: 'Through gaps in the vine bridge, green water far below' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
+            { file: 'dsc03266.jpg', caption: { zh: '從暗處望向葛藤橋，藤蔓垂在兩側', en: 'The vine bridge seen from the shadows, vines hanging on both sides' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "200"} },
+            { file: 'dsc03292.jpg', caption: { zh: '大步危峽谷間湍急的溪流', en: 'A rushing stream through the Ōboke Gorge' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/320s", "iso": "100"} },
+            { file: 'dsc03297.jpg', caption: { zh: '白色岩層間翻起浪花的急流', en: 'Whitewater churning between pale rock layers' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "54mm", "aperture": "f/22", "shutter": "1/8s", "iso": "100"} },
+            { file: 'dsc03301.jpg', caption: { zh: '灰白色的岩壁直直落進碧綠河水', en: 'Grey-white cliffs dropping straight into green water' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "57mm", "aperture": "f/4", "shutter": "1/320s", "iso": "50"} },
+            { file: 'dsc03323.jpg', caption: { zh: '遊船駛過大步危峽谷的河面', en: 'A tour boat crossing the river in Ōboke Gorge' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "64"} },
+            { file: 'dsc03360.jpg', caption: { zh: '岩壁上的細瀑匯進翻騰的溪流', en: 'A thin waterfall on the cliff joining the rushing stream' }, w: 1334, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/22", "shutter": "1/6s", "iso": "100"} },
+            { file: 'img_9012.jpg', caption: { zh: '站在岩石上的一隻鸕鶿', en: 'A cormorant standing on a rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/11", "shutter": "1/125s", "iso": "640"} }
+          ] },
+        { key: 'imabari', date: '6.16', name: { zh: '今治毛巾美術館', en: 'Imabari Towel Museum' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03365.jpg', caption: { zh: '一整面排列整齊的彩色紗線軸', en: 'A whole wall of neatly stacked colorful thread spools' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "40mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "400"} },
+            { file: 'dsc03379.jpg', caption: { zh: '近拍線軸，前景清晰、後方漸漸模糊', en: 'Spools up close, sharp in front and softening behind' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/160s", "iso": "640"} },
+            { file: 'dsc03383.jpg', caption: { zh: '暖色的線軸一層層往上疊', en: 'Warm-toned spools stacked layer on layer' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "1600"} },
+            { file: 'dsc03384.jpg', caption: { zh: '線軸小屋裡，唯一一顆燈泡', en: 'The single light bulb in the spool hut' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/1600s", "iso": "1250"} },
+            { file: 'dsc03399.jpg', caption: { zh: '掛在線軸前的糊塗塌客毛巾', en: 'A Gudetama towel hanging in front of the spools' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "67mm", "aperture": "f/2.8", "shutter": "1/320s", "iso": "1250"} },
+            { file: 'dsc03400.jpg', caption: { zh: '掛在線軸前的史努比毛巾', en: 'A Snoopy towel hanging in front of the spools' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "62mm", "aperture": "f/2.8", "shutter": "1/320s", "iso": "1250"} }
+          ] },
+        { key: 'matsuyama', date: '6.16–6.17', name: { zh: '松山・道後', en: 'Matsuyama & Dōgo' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03417.jpg', caption: { zh: '昏黃燈光下，桌上準備烤的肉', en: 'Meat laid out for grilling under warm light' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "50mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "50"} },
+            { file: 'dsc03441.jpg', caption: { zh: '夜裡停在商店街口的計程車', en: 'A taxi parked at the shopping-street entrance at night' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/200s", "iso": "400"} },
+            { file: 'dsc03451.jpg', caption: { zh: '夜裡亮著頭燈的計程車', en: 'A taxi with its headlights on at night' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/100s", "iso": "640"} },
+            { file: 'dsc03460.jpg', caption: { zh: '商店街裡擠成一排的腳踏車', en: 'Bicycles crammed into a row in the shopping arcade' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/50s", "iso": "500"} },
+            { file: 'dsc03483.jpg', caption: { zh: '樹叢後露出的松山城天守', en: 'Matsuyama Castle’s keep peeking out behind trees' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "69mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03497.jpg', caption: { zh: '松山城的木門後方，石牆與長長的石階', en: 'Past a wooden gate of Matsuyama Castle, stone walls and a long stairway' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "40mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03505.jpg', caption: { zh: '松山城層疊的灰瓦屋頂', en: 'Matsuyama Castle’s layered grey-tiled roofs' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03507.jpg', caption: { zh: '從松山城往下看，整片松山市區', en: 'All of Matsuyama city, seen from the castle' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03511.jpg', caption: { zh: '從暗處斜斜框住的天守一角', en: 'A corner of the keep framed at an angle from the shadows' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "42mm", "aperture": "f/3.2", "shutter": "1/800s", "iso": "50"} },
+            { file: 'img_9016.jpg', caption: { zh: '從牆縫望出去，遠處的摩天輪', en: 'A Ferris wheel in the distance, seen through a gap in the wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "149mm", "aperture": "f/8", "shutter": "1/1000s", "iso": "200"} },
+            { file: 'dsc03538.jpg', caption: { zh: '一整面擺滿的扭蛋機', en: 'A wall packed with capsule-toy machines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "50mm", "aperture": "f/5", "shutter": "1/500s", "iso": "1250"} },
+            { file: 'dsc03539.jpg', caption: { zh: '窗邊掛成一串的橘色娃娃', en: 'A string of orange dolls hanging by the window' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/5", "shutter": "1/500s", "iso": "320"} },
+            { file: 'dsc03589.jpg', caption: { zh: '停在車站月台的路面電車', en: 'A streetcar stopped at the station platform' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "64"} },
+            { file: 'dsc03598.jpg', caption: { zh: '道後溫泉本館的入口與屋簷', en: 'The entrance and eaves of Dōgo Onsen Honkan' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "46mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "125"} },
+            { file: 'dsc03608.jpg', caption: { zh: '街口舉起手機拍照的路人', en: 'A passer-by on a street corner raising a phone to take a photo' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/400s", "iso": "50"} },
+            { file: 'img_9031.jpg', caption: { zh: '鳥居後方長長的石階，盡頭是紅色樓門', en: 'A long stone stairway beyond a torii, a red gate at the top' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "160mm", "aperture": "f/8", "shutter": "1/200s", "iso": "200"} },
+            { file: 'dsc03620.jpg', caption: { zh: '等紅燈的單車騎士，頭上電線縱橫', en: 'A cyclist waiting at a red light under a web of wires' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "100"} }
+          ] },
+        { key: 'shodoshima', date: '6.18', name: { zh: '小豆島', en: 'Shōdoshima' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03633.jpg', caption: { zh: '港邊的高塔大樓與碼頭', en: 'A harbor tower and the pier' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "46mm", "aperture": "f/2.8", "shutter": "1/1250s", "iso": "50"} },
+            { file: 'dsc03751.jpg', caption: { zh: '小豆島橄欖公園的希臘風車', en: 'The Greek windmill at Shōdoshima Olive Park' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/4000s", "iso": "50"} },
+            { file: 'dsc03754.jpg', caption: { zh: '沿著海岸彎進小鎮的公路', en: 'A coastal road curving into a small town' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/4000s", "iso": "50"} },
+            { file: 'dsc03793.jpg', caption: { zh: '樹林間的觀景台，遠處是瀨戶內海', en: 'A lookout among the trees, the Seto Inland Sea beyond' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "29mm", "aperture": "f/2.8", "shutter": "1/1000s", "iso": "50"} },
+            { file: 'dsc03829.jpg', caption: { zh: '下午港灣裡停靠的帆船', en: 'Sailboats moored in the harbor in the afternoon' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/6400s", "iso": "64"} }
+          ] },
+        { key: 'ritsurin', date: '6.19', name: { zh: '栗林公園', en: 'Ritsurin Garden' }, dir: 'shikoku',
+          photos: [
+            { file: 'dsc03841.jpg', caption: { zh: '池水與松林環繞的日式庭園', en: 'A Japanese garden wrapped in ponds and pines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "56mm", "aperture": "f/2.8", "shutter": "1/800s", "iso": "50"} },
+            { file: 'dsc03844.jpg', caption: { zh: '近看盤曲的松樹枝幹', en: 'Twisting pine branches up close' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "44mm", "aperture": "f/2.8", "shutter": "1/1000s", "iso": "50"} },
+            { file: 'dsc03852.jpg', caption: { zh: '一枝松樹探向平靜的池面', en: 'A pine branch reaching over a still pond' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "63mm", "aperture": "f/2.8", "shutter": "1/2000s", "iso": "50"} },
+            { file: 'dsc03865.jpg', caption: { zh: '荷葉之間開著一朵粉色荷花', en: 'A single pink lotus among the lotus leaves' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "70mm", "aperture": "f/2.8", "shutter": "1/2000s", "iso": "50"} },
+            { file: 'dsc03873.jpg', caption: { zh: '池畔的茶亭與修剪過的松樹', en: 'A teahouse by the pond and clipped pines' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "69mm", "aperture": "f/2.8", "shutter": "1/640s", "iso": "50"} }
+          ] }
       ] },
-
-    { id: 'seoul', name: { zh: '首爾', en: 'Seoul' }, year: '2026.01', cover: 'img_7923.jpg',
+    { id: 'seoul', name: { zh: '首爾', en: 'Seoul' }, year: '2026.01', cover: 'img_7923.jpg', coverDir: 'seoul',
       intro: { zh: '冬天的首爾：宮殿、韓屋與首爾塔，梨花女大的光影，還有一路吃不完的麵包。', en: 'Seoul in winter: palaces, hanok and N Seoul Tower, light at Ewha, and more bread than we could finish.' },
-      photos: [
-        { file: 'img_7735.jpg', caption: { zh: '從機窗往下看，覆雪的山地與河流', en: 'Snowy mountains and rivers, seen from the plane window' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/10", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_7739.jpg', caption: { zh: '飛往首爾途中，窗外的機翼與地平線', en: 'The wing and the horizon on the way to Seoul' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/11", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_7753.jpg', caption: { zh: '夜裡遠方亮著的樂天世界塔與城市燈火', en: 'Lotte World Tower and city lights glowing far off at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/5s", "iso": "400"} },
-        { file: 'img_7758.jpg', caption: { zh: '藍天下的光化門', en: 'Gwanghwamun under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_7783.jpg', caption: { zh: '韓屋屋簷後方，遠處的南山首爾塔', en: 'N Seoul Tower beyond hanok eaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "89mm", "aperture": "f/4.5", "shutter": "1/2000s", "iso": "200"} },
-        { file: 'img_7789.jpg', caption: { zh: '枝葉框住的南山塔與韓屋屋頂', en: 'Namsan Tower and hanok roofs framed by leaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "109mm", "aperture": "f/9", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_7792.jpg', caption: { zh: 'Artist Bakery 鐵桶裡插滿的紙捲', en: 'Paper rolls packed into a metal bin at Artist Bakery' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "41mm", "aperture": "f/5", "shutter": "1/60s", "iso": "100"} },
-        { file: 'img_7803.jpg', caption: { zh: 'Artist Bakery 一盤盤剛出爐的可頌', en: 'Trays of fresh croissants at Artist Bakery' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/4", "shutter": "1/30s", "iso": "500"} },
-        { file: 'img_7810.jpg', caption: { zh: '架上排滿的可頌與鹽麵包', en: 'Shelves lined with croissants and salt bread' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/3.5", "shutter": "1/30s", "iso": "160"} },
-        { file: 'img_7816.jpg', caption: { zh: '黃、黑兩色的可頌並排在木盤裡', en: 'Yellow and black croissants side by side on a wooden board' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "2000"} },
-        { file: 'img_7827.jpg', caption: { zh: '草莓奶油麵包配一杯花茶', en: 'A strawberry cream bun with a cup of flower tea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/5.6", "shutter": "1/100s", "iso": "100"} },
-        { file: 'img_7830.jpg', caption: { zh: '兩個人走過布滿紋理的牆面', en: 'Two people walking past a textured wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/2000s", "iso": "200"} },
-        { file: 'img_7838.jpg', caption: { zh: '梨花女大的階梯，紅衣行人走在光影之間', en: 'The steps at Ewha Womans University, a figure in red walking through light and shadow' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "200"} },
-        { file: 'img_7839.jpg', caption: { zh: '從另一個角度看梨花女大的階梯與盆栽', en: 'Another angle on the Ewha steps and potted plants' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_7841.jpg', caption: { zh: '峽谷盡頭，遠處的梨花女大舊校舍', en: 'At the end of the canyon, Ewha’s old campus buildings in the distance' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "200"} },
-        { file: 'img_7865.jpg', caption: { zh: '樓梯間裡，陽光一道道落在階梯上', en: 'Sunlight falling in stripes across a stairwell' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "200"} },
-        { file: 'img_7879.jpg', caption: { zh: '冬日樹影落在梨花女大的老校舍牆上', en: 'Winter tree shadows on an old Ewha building' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/4.5", "shutter": "1/1250s", "iso": "200"} },
-        { file: 'img_7892.jpg', caption: { zh: '倫敦貝果博物館的椒鹽奶油貝果', en: 'A pretzel butter bagel at London Bagel Museum' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "50mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "1600"} },
-        { file: 'img_7896-2.jpg', caption: { zh: '一整櫃貝果，牌子寫著各種口味', en: 'A whole case of bagels, each flavor labeled' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/3.5", "shutter": "1/30s", "iso": "320"} },
-        { file: 'img_7902-2.jpg', caption: { zh: '提著倫敦貝果博物館的紙袋', en: 'Carrying a London Bagel Museum paper bag' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "35mm", "aperture": "f/4.5", "shutter": "1/250s", "iso": "1600"} },
-        { file: 'img_7912.jpg', caption: { zh: '傍晚的漢江，陽光在大樓玻璃上反射', en: 'The Han River at dusk, sunlight glinting off tower glass' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/400s", "iso": "200"} },
-        { file: 'img_7919.jpg', caption: { zh: '夕陽下的江畔公寓，遠處是南山塔', en: 'Riverside apartments at sunset, Namsan Tower beyond' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/5.6", "shutter": "1/1000s", "iso": "800"} },
-        { file: 'img_7923.jpg', caption: { zh: '粉紫色天空下的南山塔與公寓', en: 'Namsan Tower and apartments under a pink-violet sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "231mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "1600"} },
-        { file: 'img_7929-2.jpg', caption: { zh: '宮殿正殿的門與台階，匾額寫著「中和殿」', en: 'The palace hall’s doors and steps, the plaque reading “Junghwajeon”' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4", "shutter": "1/640s", "iso": "100"} },
-        { file: 'img_7949.jpg', caption: { zh: '藍天下的松枝與宮殿屋簷', en: 'Pine branches and palace eaves under a blue sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4", "shutter": "1/640s", "iso": "100"} },
-        { file: 'img_7982-2.jpg', caption: { zh: '星空圖書館高聳的書牆與玻璃天頂', en: 'The towering bookshelves and glass roof of Starfield Library' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/3.5", "shutter": "1/320s", "iso": "800"} },
-        { file: 'img_8017.jpg', caption: { zh: '從高處看漢江上的一座座橋', en: 'Bridge after bridge over the Han River, seen from above' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "117mm", "aperture": "f/5", "shutter": "1/800s", "iso": "1600"} },
-        { file: 'img_8024.jpg', caption: { zh: '漢江上的斜張橋與倒影', en: 'A cable-stayed bridge and its reflection on the Han' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "149mm", "aperture": "f/5", "shutter": "1/400s", "iso": "1600"} },
-        { file: 'img_8025.jpg', caption: { zh: '俯瞰漢江的長橋，畫面斜斜切過', en: 'A long bridge over the Han cutting diagonally across the frame' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/400s", "iso": "1600"} },
-        { file: 'img_8052.jpg', caption: { zh: '藍天下，山頂上的南山塔', en: 'Namsan Tower on the hilltop under a blue sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/1000s", "iso": "100"} },
-        { file: 'img_8054.jpg', caption: { zh: '上午的天際線，樂天世界塔立在中間', en: 'The morning skyline with Lotte World Tower in the middle' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/1000s", "iso": "100"} },
-        { file: 'img_8063.jpg', caption: { zh: '從牆洞望出去，遠方的樂天世界塔', en: 'Lotte World Tower in the distance, through a hole in the wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "84mm", "aperture": "f/4.5", "shutter": "1/3200s", "iso": "100"} },
-        { file: 'img_8071.jpg', caption: { zh: '枯枝上停著一隻鳥，遠處是南山塔', en: 'A bird on a bare branch, Namsan Tower beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "109mm", "aperture": "f/5", "shutter": "1/3200s", "iso": "100"} }
+      chapters: [
+        { key: 'arrive', date: '1.02', name: { zh: '抵達', en: 'Arrival' }, dir: 'seoul',
+          photos: [
+            { file: 'img_7735.jpg', caption: { zh: '從機窗往下看，覆雪的山地與河流', en: 'Snowy mountains and rivers, seen from the plane window' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/10", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_7739.jpg', caption: { zh: '飛往首爾途中，窗外的機翼與地平線', en: 'The wing and the horizon on the way to Seoul' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/11", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_7753.jpg', caption: { zh: '夜裡遠方亮著的樂天世界塔與城市燈火', en: 'Lotte World Tower and city lights glowing far off at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/5s", "iso": "400"} }
+          ] },
+        { key: 'gwanghwamun', date: '1.03', name: { zh: '光化門與麵包店', en: 'Gwanghwamun & bakeries' }, dir: 'seoul',
+          photos: [
+            { file: 'img_7758.jpg', caption: { zh: '藍天下的光化門', en: 'Gwanghwamun under a blue sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_7783.jpg', caption: { zh: '韓屋屋簷後方，遠處的南山首爾塔', en: 'N Seoul Tower beyond hanok eaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "89mm", "aperture": "f/4.5", "shutter": "1/2000s", "iso": "200"} },
+            { file: 'img_7789.jpg', caption: { zh: '枝葉框住的南山塔與韓屋屋頂', en: 'Namsan Tower and hanok roofs framed by leaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "109mm", "aperture": "f/9", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_7792.jpg', caption: { zh: 'Artist Bakery 鐵桶裡插滿的紙捲', en: 'Paper rolls packed into a metal bin at Artist Bakery' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "41mm", "aperture": "f/5", "shutter": "1/60s", "iso": "100"} },
+            { file: 'img_7803.jpg', caption: { zh: 'Artist Bakery 一盤盤剛出爐的可頌', en: 'Trays of fresh croissants at Artist Bakery' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/4", "shutter": "1/30s", "iso": "500"} },
+            { file: 'img_7810.jpg', caption: { zh: '架上排滿的可頌與鹽麵包', en: 'Shelves lined with croissants and salt bread' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/3.5", "shutter": "1/30s", "iso": "160"} },
+            { file: 'img_7816.jpg', caption: { zh: '黃、黑兩色的可頌並排在木盤裡', en: 'Yellow and black croissants side by side on a wooden board' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "2000"} },
+            { file: 'img_7827.jpg', caption: { zh: '草莓奶油麵包配一杯花茶', en: 'A strawberry cream bun with a cup of flower tea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/5.6", "shutter": "1/100s", "iso": "100"} }
+          ] },
+        { key: 'ewha', date: '1.05', name: { zh: '梨花女大・漢江', en: 'Ewha & the Han River' }, dir: 'seoul',
+          photos: [
+            { file: 'img_7830.jpg', caption: { zh: '兩個人走過布滿紋理的牆面', en: 'Two people walking past a textured wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/2000s", "iso": "200"} },
+            { file: 'img_7838.jpg', caption: { zh: '梨花女大的階梯，紅衣行人走在光影之間', en: 'The steps at Ewha Womans University, a figure in red walking through light and shadow' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "200"} },
+            { file: 'img_7839.jpg', caption: { zh: '從另一個角度看梨花女大的階梯與盆栽', en: 'Another angle on the Ewha steps and potted plants' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_7841.jpg', caption: { zh: '峽谷盡頭，遠處的梨花女大舊校舍', en: 'At the end of the canyon, Ewha’s old campus buildings in the distance' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "200"} },
+            { file: 'img_7865.jpg', caption: { zh: '樓梯間裡，陽光一道道落在階梯上', en: 'Sunlight falling in stripes across a stairwell' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "200"} },
+            { file: 'img_7879.jpg', caption: { zh: '冬日樹影落在梨花女大的老校舍牆上', en: 'Winter tree shadows on an old Ewha building' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/4.5", "shutter": "1/1250s", "iso": "200"} },
+            { file: 'img_7892.jpg', caption: { zh: '倫敦貝果博物館的椒鹽奶油貝果', en: 'A pretzel butter bagel at London Bagel Museum' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "50mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "1600"} },
+            { file: 'img_7896-2.jpg', caption: { zh: '一整櫃貝果，牌子寫著各種口味', en: 'A whole case of bagels, each flavor labeled' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/3.5", "shutter": "1/30s", "iso": "320"} },
+            { file: 'img_7902-2.jpg', caption: { zh: '提著倫敦貝果博物館的紙袋', en: 'Carrying a London Bagel Museum paper bag' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "35mm", "aperture": "f/4.5", "shutter": "1/250s", "iso": "1600"} },
+            { file: 'img_7912.jpg', caption: { zh: '傍晚的漢江，陽光在大樓玻璃上反射', en: 'The Han River at dusk, sunlight glinting off tower glass' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/400s", "iso": "200"} },
+            { file: 'img_7919.jpg', caption: { zh: '夕陽下的江畔公寓，遠處是南山塔', en: 'Riverside apartments at sunset, Namsan Tower beyond' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/5.6", "shutter": "1/1000s", "iso": "800"} },
+            { file: 'img_7923.jpg', caption: { zh: '粉紫色天空下的南山塔與公寓', en: 'Namsan Tower and apartments under a pink-violet sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "231mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "1600"} }
+          ] },
+        { key: 'deoksugung', date: '1.06', name: { zh: '德壽宮・星空圖書館', en: 'Deoksugung & Starfield Library' }, dir: 'seoul',
+          photos: [
+            { file: 'img_7929-2.jpg', caption: { zh: '宮殿正殿的門與台階，匾額寫著「中和殿」', en: 'The palace hall’s doors and steps, the plaque reading “Junghwajeon”' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4", "shutter": "1/640s", "iso": "100"} },
+            { file: 'img_7949.jpg', caption: { zh: '藍天下的松枝與宮殿屋簷', en: 'Pine branches and palace eaves under a blue sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4", "shutter": "1/640s", "iso": "100"} },
+            { file: 'img_7982-2.jpg', caption: { zh: '星空圖書館高聳的書牆與玻璃天頂', en: 'The towering bookshelves and glass roof of Starfield Library' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "23mm", "aperture": "f/3.5", "shutter": "1/320s", "iso": "800"} },
+            { file: 'img_8017.jpg', caption: { zh: '從高處看漢江上的一座座橋', en: 'Bridge after bridge over the Han River, seen from above' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "117mm", "aperture": "f/5", "shutter": "1/800s", "iso": "1600"} },
+            { file: 'img_8024.jpg', caption: { zh: '漢江上的斜張橋與倒影', en: 'A cable-stayed bridge and its reflection on the Han' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "149mm", "aperture": "f/5", "shutter": "1/400s", "iso": "1600"} },
+            { file: 'img_8025.jpg', caption: { zh: '俯瞰漢江的長橋，畫面斜斜切過', en: 'A long bridge over the Han cutting diagonally across the frame' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/400s", "iso": "1600"} }
+          ] },
+        { key: 'last', date: '1.08', name: { zh: '最後一個早上', en: 'The last morning' }, dir: 'seoul',
+          photos: [
+            { file: 'img_8052.jpg', caption: { zh: '藍天下，山頂上的南山塔', en: 'Namsan Tower on the hilltop under a blue sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/1000s", "iso": "100"} },
+            { file: 'img_8054.jpg', caption: { zh: '上午的天際線，樂天世界塔立在中間', en: 'The morning skyline with Lotte World Tower in the middle' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/1000s", "iso": "100"} },
+            { file: 'img_8063.jpg', caption: { zh: '從牆洞望出去，遠方的樂天世界塔', en: 'Lotte World Tower in the distance, through a hole in the wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "84mm", "aperture": "f/4.5", "shutter": "1/3200s", "iso": "100"} },
+            { file: 'img_8071.jpg', caption: { zh: '枯枝上停著一隻鳥，遠處是南山塔', en: 'A bird on a bare branch, Namsan Tower beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "109mm", "aperture": "f/5", "shutter": "1/3200s", "iso": "100"} }
+          ] }
       ] },
-
-    { id: 'chengdu', name: { zh: '成都', en: 'Chengdu' }, year: '2026.01', cover: 'img_8350.jpg',
+    { id: 'chengdu', name: { zh: '成都', en: 'Chengdu' }, year: '2026.01', cover: 'img_8350.jpg', coverDir: 'chengdu',
       intro: { zh: '影像營的七天，從五鳳溪古鎮、西嶺雪山一路拍到熊貓。', en: 'Seven days at the film camp, from Wufengxi Ancient Town and Xiling Snow Mountain to the pandas.' },
-      photos: [
-        { file: 'img_8204.jpg', caption: { zh: '梅枝上的紅花，背景一片柔焦', en: 'Red blossoms on a plum branch against a soft blur' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/50s", "iso": "200"} },
-        { file: 'img_2720.jpg', caption: { zh: '昏暗殿內，掛著油燈的楹聯', en: 'Couplets hung with oil lamps in a dim hall' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "150mm", "aperture": "f/2.8", "shutter": "1/500s", "iso": "64"} },
-        { file: 'img_2855.jpg', caption: { zh: '粉色梅花環繞的多層古塔', en: 'A multi-tiered pagoda surrounded by pink plum blossoms' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "73mm", "aperture": "f/2.5", "shutter": "1/2500s", "iso": "500"} },
-        { file: 'img_8230.jpg', caption: { zh: '武侯祠「業紹高光」匾額下，香客正在上香', en: 'Worshippers offering incense under the “業紹高光” plaque at Wuhou Shrine' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_8234.jpg', caption: { zh: '同一座殿前的香爐與石板地', en: 'The incense burner and flagstones in front of the same hall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_8246.jpg', caption: { zh: '暗處一尊龍形雕飾', en: 'A dragon carving in the shadows' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_8259.jpg', caption: { zh: '昏暗殿內的坐像，上方掛著匾額', en: 'A seated statue in a dim hall, a plaque above' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/5", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_8260.jpg', caption: { zh: '枝頭盛開的紅梅', en: 'Red plum blossoms in full bloom' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_8261.jpg', caption: { zh: '灰白天空下，枯枝上停著一隻鳥', en: 'A bird on a bare branch under a pale grey sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/1250s", "iso": "800"} },
-        { file: 'img_8309.jpg', caption: { zh: '一整面亮著的紙燈籠', en: 'A whole wall of glowing paper lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/50s", "iso": "100"} },
-        { file: 'img_8313.jpg', caption: { zh: '夜裡亮起彩色燈光的雙子塔', en: 'Twin towers lit up in color at night' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/4", "shutter": "1/80s", "iso": "1600"} },
-        { file: 'img_8347.jpg', caption: { zh: '竹叢間探出頭的大熊貓', en: 'A giant panda peeking out of the bamboo' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
-        { file: 'img_8350.jpg', caption: { zh: '埋頭吃竹子的大熊貓', en: 'A giant panda head-down in its bamboo' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
-        { file: 'img_8362.jpg', caption: { zh: '趴在樹枝上的大熊貓', en: 'A giant panda sprawled on a branch' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
-        { file: 'img_8383.jpg', caption: { zh: '攤位上一格格排好的串珠與手鍊', en: 'Beads and bracelets sorted into a grid at a stall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/500s", "iso": "400"} },
-        { file: 'img_8403.jpg', caption: { zh: '蒸籠裡冒著熱氣的小點心', en: 'Little dumplings steaming in a bamboo basket' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "400"} },
-        { file: 'img_8430.jpg', caption: { zh: '夜裡亮燈的安順廊橋倒映在江面', en: 'Anshun Bridge lit at night, reflected in the river' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "30mm", "aperture": "f/4", "shutter": "1/60s", "iso": "1600"} },
-        { file: 'img_8456.jpg', caption: { zh: '西嶺雪山的纜車車廂', en: 'A cable car at Xiling Snow Mountain' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "33mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "100"} },
-        { file: 'img_8460.jpg', caption: { zh: '結霜的松枝，像撒了一層糖霜', en: 'Frosted pine needles, as if dusted with sugar' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "100"} },
-        { file: 'img_8467.jpg', caption: { zh: '霧凇樹幹上的一隻松鼠', en: 'A squirrel on a rime-covered trunk' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "160"} },
-        { file: 'img_8504.jpg', caption: { zh: '濃霧裡結霜的杉樹', en: 'Frosted firs in thick fog' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_8532.jpg', caption: { zh: '灰濛天色下的高樓與天橋', en: 'Towers and a footbridge under a hazy sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5", "shutter": "1/200s", "iso": "400"} },
-        { file: 'img_8546.jpg', caption: { zh: '草地上的大字，幾個小孩在踢球', en: 'Big letters on the lawn, a few kids playing football' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "127mm", "aperture": "f/5", "shutter": "1/400s", "iso": "200"} },
-        { file: 'img_8569.jpg', caption: { zh: '掛滿紅燈籠的石階，遊客穿梭其中', en: 'Stone steps hung with red lanterns, visitors weaving through' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
-        { file: 'img_8575.jpg', caption: { zh: '「今朝有戲」招牌下賣橘子的大爺', en: 'An old man selling oranges under the “今朝有戲” sign' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "84mm", "aperture": "f/5", "shutter": "1/800s", "iso": "200"} },
-        { file: 'img_8585.jpg', caption: { zh: '紅葉樹旁的龍吟天城古建築', en: 'Old buildings at Longyin Tiancheng beside a red-leaved tree' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "61mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
-        { file: 'img_8590.jpg', caption: { zh: '穿著衣服的白色小狗，坐在主人腳邊', en: 'A little white dog in clothes, sitting at its owner’s feet' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
-        { file: 'img_8599.jpg', caption: { zh: '掛著燈籠的紅樹', en: 'A red tree hung with lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4.5", "shutter": "1/80s", "iso": "200"} },
-        { file: 'img_8600.jpg', caption: { zh: '河邊步道，紅色燈柱一路延伸', en: 'A riverside path with red lamp posts stretching on' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/100s", "iso": "100"} },
-        { file: 'img_8604.jpg', caption: { zh: '紅黑相間的層疊屋簷', en: 'Layered red-and-black eaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_8612.jpg', caption: { zh: '石階上探頭的黑白貓', en: 'A black-and-white cat peeking over the stone steps' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "6400"} }
+      chapters: [
+        { key: 'wuhou', date: '1.27', name: { zh: '武侯祠與梅花', en: 'Wuhou Shrine & plum blossoms' }, dir: 'chengdu',
+          photos: [
+            { file: 'img_8204.jpg', caption: { zh: '梅枝上的紅花，背景一片柔焦', en: 'Red blossoms on a plum branch against a soft blur' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/50s", "iso": "200"} },
+            { file: 'img_2720.jpg', caption: { zh: '昏暗殿內，掛著油燈的楹聯', en: 'Couplets hung with oil lamps in a dim hall' }, w: 1333, h: 2000, exif: {"camera": "Sony A7 IV", "focal": "150mm", "aperture": "f/2.8", "shutter": "1/500s", "iso": "64"} },
+            { file: 'img_2855.jpg', caption: { zh: '粉色梅花環繞的多層古塔', en: 'A multi-tiered pagoda surrounded by pink plum blossoms' }, w: 2000, h: 1333, exif: {"camera": "Sony A7 IV", "focal": "73mm", "aperture": "f/2.5", "shutter": "1/2500s", "iso": "500"} },
+            { file: 'img_8230.jpg', caption: { zh: '武侯祠「業紹高光」匾額下，香客正在上香', en: 'Worshippers offering incense under the “業紹高光” plaque at Wuhou Shrine' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_8234.jpg', caption: { zh: '同一座殿前的香爐與石板地', en: 'The incense burner and flagstones in front of the same hall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_8246.jpg', caption: { zh: '暗處一尊龍形雕飾', en: 'A dragon carving in the shadows' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_8259.jpg', caption: { zh: '昏暗殿內的坐像，上方掛著匾額', en: 'A seated statue in a dim hall, a plaque above' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/5", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_8260.jpg', caption: { zh: '枝頭盛開的紅梅', en: 'Red plum blossoms in full bloom' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_8261.jpg', caption: { zh: '灰白天空下，枯枝上停著一隻鳥', en: 'A bird on a bare branch under a pale grey sky' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/1250s", "iso": "800"} }
+          ] },
+        { key: 'panda', date: '1.28–1.29', name: { zh: '熊貓與城裡的燈', en: 'Pandas & city lights' }, dir: 'chengdu',
+          photos: [
+            { file: 'img_8309.jpg', caption: { zh: '一整面亮著的紙燈籠', en: 'A whole wall of glowing paper lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/50s", "iso": "100"} },
+            { file: 'img_8313.jpg', caption: { zh: '夜裡亮起彩色燈光的雙子塔', en: 'Twin towers lit up in color at night' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/4", "shutter": "1/80s", "iso": "1600"} },
+            { file: 'img_8347.jpg', caption: { zh: '竹叢間探出頭的大熊貓', en: 'A giant panda peeking out of the bamboo' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
+            { file: 'img_8350.jpg', caption: { zh: '埋頭吃竹子的大熊貓', en: 'A giant panda head-down in its bamboo' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
+            { file: 'img_8362.jpg', caption: { zh: '趴在樹枝上的大熊貓', en: 'A giant panda sprawled on a branch' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "1600"} },
+            { file: 'img_8383.jpg', caption: { zh: '攤位上一格格排好的串珠與手鍊', en: 'Beads and bracelets sorted into a grid at a stall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/500s", "iso": "400"} },
+            { file: 'img_8403.jpg', caption: { zh: '蒸籠裡冒著熱氣的小點心', en: 'Little dumplings steaming in a bamboo basket' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/4.5", "shutter": "1/1000s", "iso": "400"} },
+            { file: 'img_8430.jpg', caption: { zh: '夜裡亮燈的安順廊橋倒映在江面', en: 'Anshun Bridge lit at night, reflected in the river' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "30mm", "aperture": "f/4", "shutter": "1/60s", "iso": "1600"} }
+          ] },
+        { key: 'xiling', date: '1.30', name: { zh: '西嶺雪山', en: 'Xiling Snow Mountain' }, dir: 'chengdu',
+          photos: [
+            { file: 'img_8456.jpg', caption: { zh: '西嶺雪山的纜車車廂', en: 'A cable car at Xiling Snow Mountain' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "33mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "100"} },
+            { file: 'img_8460.jpg', caption: { zh: '結霜的松枝，像撒了一層糖霜', en: 'Frosted pine needles, as if dusted with sugar' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "100"} },
+            { file: 'img_8467.jpg', caption: { zh: '霧凇樹幹上的一隻松鼠', en: 'A squirrel on a rime-covered trunk' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "160"} },
+            { file: 'img_8504.jpg', caption: { zh: '濃霧裡結霜的杉樹', en: 'Frosted firs in thick fog' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} }
+          ] },
+        { key: 'longyin', date: '1.31', name: { zh: '龍吟天城', en: 'Longyin Tiancheng' }, dir: 'chengdu',
+          photos: [
+            { file: 'img_8532.jpg', caption: { zh: '灰濛天色下的高樓與天橋', en: 'Towers and a footbridge under a hazy sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5", "shutter": "1/200s", "iso": "400"} },
+            { file: 'img_8546.jpg', caption: { zh: '草地上的大字，幾個小孩在踢球', en: 'Big letters on the lawn, a few kids playing football' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "127mm", "aperture": "f/5", "shutter": "1/400s", "iso": "200"} },
+            { file: 'img_8569.jpg', caption: { zh: '掛滿紅燈籠的石階，遊客穿梭其中', en: 'Stone steps hung with red lanterns, visitors weaving through' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
+            { file: 'img_8575.jpg', caption: { zh: '「今朝有戲」招牌下賣橘子的大爺', en: 'An old man selling oranges under the “今朝有戲” sign' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "84mm", "aperture": "f/5", "shutter": "1/800s", "iso": "200"} },
+            { file: 'img_8585.jpg', caption: { zh: '紅葉樹旁的龍吟天城古建築', en: 'Old buildings at Longyin Tiancheng beside a red-leaved tree' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "61mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
+            { file: 'img_8590.jpg', caption: { zh: '穿著衣服的白色小狗，坐在主人腳邊', en: 'A little white dog in clothes, sitting at its owner’s feet' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/250s", "iso": "200"} },
+            { file: 'img_8599.jpg', caption: { zh: '掛著燈籠的紅樹', en: 'A red tree hung with lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/4.5", "shutter": "1/80s", "iso": "200"} },
+            { file: 'img_8600.jpg', caption: { zh: '河邊步道，紅色燈柱一路延伸', en: 'A riverside path with red lamp posts stretching on' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/100s", "iso": "100"} },
+            { file: 'img_8604.jpg', caption: { zh: '紅黑相間的層疊屋簷', en: 'Layered red-and-black eaves' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_8612.jpg', caption: { zh: '石階上探頭的黑白貓', en: 'A black-and-white cat peeking over the stone steps' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "6400"} }
+          ] }
       ] },
-
-    { id: 'busan', name: { zh: '釜山', en: 'Busan' }, year: '2025.09', cover: 'img_6838.jpg',
-      intro: { zh: '海、燈塔、甘川洞的巷弄，還有一隻剛好對上眼的貓。', en: 'The sea, lighthouses, the alleys of Gamcheon, and a cat that happened to look back.' },
-      photos: [
-        { file: 'img_6584.jpg', caption: { zh: '海鮮市場兩側的商家，遠處是釜山的高樓', en: 'Shops lining the seafood market, Busan’s towers in the distance' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/7.1", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6585.jpg', caption: { zh: '街邊整排的韓文招牌', en: 'A row of Korean shop signs along the street' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "200mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "250"} },
-        { file: 'img_6589.jpg', caption: { zh: '霧氣籠罩的海岸', en: 'A coastline wrapped in mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_6590.jpg', caption: { zh: '薄霧裡若隱若現的海岸線', en: 'The shoreline fading in and out of light haze' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "160mm", "aperture": "f/9", "shutter": "1/640s", "iso": "100"} },
-        { file: 'img_6596.jpg', caption: { zh: '沙灘上的小孩', en: 'A child on the beach' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_6619.jpg', caption: { zh: '海邊的佛塔', en: 'A pagoda by the sea' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "47mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6629.jpg', caption: { zh: '掛滿彩色燈籠的寺院', en: 'A temple hung with colorful lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} },
-        { file: 'img_6641.jpg', caption: { zh: '伸向海面的觀景台', en: 'An observation deck reaching out over the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/6.3", "shutter": "1/500s", "iso": "160"} },
-        { file: 'img_6649.jpg', caption: { zh: '青沙埔站下延伸的鐵軌', en: 'Tracks stretching on below Cheongsapo Station' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "500"} },
-        { file: 'img_6659.jpg', caption: { zh: '港口的紅白燈塔', en: 'Red and white lighthouses at the harbor' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_6678.jpg', caption: { zh: '雲層下的天空膠囊列車', en: 'The Sky Capsule under the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "61mm", "aperture": "f/9", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6683.jpg', caption: { zh: '高架軌道下的黃色海岸列車', en: 'The yellow beach train beneath the elevated track' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "250"} },
-        { file: 'img_6690.jpg', caption: { zh: '海面上的礁石', en: 'Rocks breaking the surface of the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6694.jpg', caption: { zh: '木欄杆外的大海', en: 'The open sea beyond a wooden fence' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6697.jpg', caption: { zh: '浪打在岩岸上', en: 'Waves hitting the rocky shore' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/9", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_6705.jpg', caption: { zh: '站在礁石頂的海鷗', en: 'A gull standing on top of a rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6712.jpg', caption: { zh: '遠處防波堤上的紅燈塔', en: 'A red lighthouse on a distant breakwater' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6714.jpg', caption: { zh: '消波塊上的紅燈塔與遠方工廠', en: 'A red lighthouse on the tetrapods, factories beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "124mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6721.jpg', caption: { zh: '貼著海面飛過的海鷗', en: 'A gull skimming low over the water' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "222mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_6726.jpg', caption: { zh: '駛過海面的漁船', en: 'A fishing boat crossing the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6828.jpg', caption: { zh: '甘川洞文化村', en: 'Gamcheon Culture Village' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "37mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_6830.jpg', caption: { zh: '山坡上密密麻麻的彩色房子', en: 'Colorful houses packed across the hillside' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6838.jpg', caption: { zh: '坐在巷口的黑白貓', en: 'A black-and-white cat sitting at the mouth of an alley' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} }
+    { id: 'korea-2025', name: { zh: '大邱・釜山・慶州', en: 'Daegu, Busan & Gyeongju' }, year: '2025.09', cover: 'img_6838.jpg', coverDir: 'busan',
+      intro: { zh: '九月的慶尚道：大邱的街頭、釜山的海、慶州的古寺，最後回到釜山的甘川洞。', en: 'Gyeongsang in September: the streets of Daegu, the sea at Busan, old temples in Gyeongju, and back to Busan for Gamcheon.' },
+      chapters: [
+        { key: 'daegu', date: '9.14', name: { zh: '大邱', en: 'Daegu' }, dir: 'daegu', cover: 'img_6503.jpg',
+          note: { zh: '教堂、韓屋改建的星巴克，和入夜後的霓虹。', en: 'A cathedral, a hanok Starbucks, and neon after dark.' },
+          photos: [
+            { file: 'img_6440.jpg', caption: { zh: '電線交錯的街道', en: 'A street crisscrossed with power lines' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "640"} },
+            { file: 'img_6448.jpg', caption: { zh: '城市後方的電視塔', en: 'A TV tower behind the city' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_6503.jpg', caption: { zh: '雙尖塔的紅磚教堂', en: 'A red-brick church with twin spires' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/10", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_6509.jpg', caption: { zh: '韓屋造型的星巴克', en: 'A hanok-style Starbucks' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "39mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "100"} },
+            { file: 'img_6526.jpg', caption: { zh: '霓虹招牌亮起的夜街', en: 'A night street lit by neon signs' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "42mm", "aperture": "f/20", "shutter": "1/20s", "iso": "800"} }
+          ] },
+        { key: 'busan', date: '9.15–9.16', name: { zh: '釜山', en: 'Busan' }, dir: 'busan', cover: 'img_6678.jpg',
+          photos: [
+            { file: 'img_6584.jpg', caption: { zh: '海鮮市場兩側的商家，遠處是釜山的高樓', en: 'Shops lining the seafood market, Busan’s towers in the distance' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/7.1", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6585.jpg', caption: { zh: '街邊整排的韓文招牌', en: 'A row of Korean shop signs along the street' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "200mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "250"} },
+            { file: 'img_6589.jpg', caption: { zh: '霧氣籠罩的海岸', en: 'A coastline wrapped in mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_6590.jpg', caption: { zh: '薄霧裡若隱若現的海岸線', en: 'The shoreline fading in and out of light haze' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "160mm", "aperture": "f/9", "shutter": "1/640s", "iso": "100"} },
+            { file: 'img_6596.jpg', caption: { zh: '沙灘上的小孩', en: 'A child on the beach' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_6619.jpg', caption: { zh: '海邊的佛塔', en: 'A pagoda by the sea' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "47mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6629.jpg', caption: { zh: '掛滿彩色燈籠的寺院', en: 'A temple hung with colorful lanterns' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} },
+            { file: 'img_6641.jpg', caption: { zh: '伸向海面的觀景台', en: 'An observation deck reaching out over the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/6.3", "shutter": "1/500s", "iso": "160"} },
+            { file: 'img_6649.jpg', caption: { zh: '青沙埔站下延伸的鐵軌', en: 'Tracks stretching on below Cheongsapo Station' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "500"} },
+            { file: 'img_6659.jpg', caption: { zh: '港口的紅白燈塔', en: 'Red and white lighthouses at the harbor' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_6678.jpg', caption: { zh: '雲層下的天空膠囊列車', en: 'The Sky Capsule under the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "61mm", "aperture": "f/9", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_6683.jpg', caption: { zh: '高架軌道下的黃色海岸列車', en: 'The yellow beach train beneath the elevated track' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/5.6", "shutter": "1/250s", "iso": "250"} },
+            { file: 'img_6690.jpg', caption: { zh: '海面上的礁石', en: 'Rocks breaking the surface of the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6694.jpg', caption: { zh: '木欄杆外的大海', en: 'The open sea beyond a wooden fence' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6697.jpg', caption: { zh: '浪打在岩岸上', en: 'Waves hitting the rocky shore' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/9", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_6705.jpg', caption: { zh: '站在礁石頂的海鷗', en: 'A gull standing on top of a rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_6712.jpg', caption: { zh: '遠處防波堤上的紅燈塔', en: 'A red lighthouse on a distant breakwater' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_6714.jpg', caption: { zh: '消波塊上的紅燈塔與遠方工廠', en: 'A red lighthouse on the tetrapods, factories beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "124mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_6721.jpg', caption: { zh: '貼著海面飛過的海鷗', en: 'A gull skimming low over the water' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "222mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_6726.jpg', caption: { zh: '駛過海面的漁船', en: 'A fishing boat crossing the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} }
+          ] },
+        { key: 'gyeongju', date: '9.16', name: { zh: '慶州', en: 'Gyeongju' }, dir: 'gyeongju', cover: 'img_6765.jpg',
+          note: { zh: '新羅古都的一天，從佛國寺的屋簷走到月精橋。', en: 'A day in the old Silla capital, from the eaves of Bulguksa to Woljeonggyo Bridge.' },
+          photos: [
+            { file: 'img_6742.jpg', caption: { zh: '掛滿祈福牌的寺院門口', en: 'A temple gate hung with prayer tablets' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_6755.jpg', caption: { zh: '松樹下的寺院屋簷', en: 'Temple eaves beneath the pines' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "47mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_6765.jpg', caption: { zh: '門框裡框住的另一座殿', en: 'Another hall framed inside the doorway' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_6767.jpg', caption: { zh: '石欄杆與彩繪屋簷', en: 'Stone balustrades and painted eaves' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_6784.jpg', caption: { zh: '遠山下的河與古村', en: 'A river and an old village below distant mountains' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_6796.jpg', caption: { zh: '水邊的韓式樓閣', en: 'A Korean pavilion by the water' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "35mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6798.jpg', caption: { zh: '橫過溪水的踏石', en: 'Stepping stones crossing the stream' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_6800.jpg', caption: { zh: '河面倒映著月精橋', en: 'Woljeonggyo Bridge reflected in the river' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "29mm", "aperture": "f/10", "shutter": "1/200s", "iso": "100"} }
+          ] },
+        { key: 'gamcheon', date: '9.17', name: { zh: '釜山・甘川洞', en: 'Busan · Gamcheon' }, dir: 'busan', cover: 'img_6838.jpg',
+          photos: [
+            { file: 'img_6828.jpg', caption: { zh: '甘川洞文化村', en: 'Gamcheon Culture Village' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "37mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_6830.jpg', caption: { zh: '山坡上密密麻麻的彩色房子', en: 'Colorful houses packed across the hillside' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_6838.jpg', caption: { zh: '坐在巷口的黑白貓', en: 'A black-and-white cat sitting at the mouth of an alley' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} }
+          ] }
       ] },
-
-    { id: 'gyeongju', name: { zh: '慶州', en: 'Gyeongju' }, year: '2025.09', cover: 'img_6765.jpg',
-      intro: { zh: '新羅古都的一天，從佛國寺的屋簷走到月精橋。', en: 'A day in the old Silla capital, from the eaves of Bulguksa to Woljeonggyo Bridge.' },
-      photos: [
-        { file: 'img_6742.jpg', caption: { zh: '掛滿祈福牌的寺院門口', en: 'A temple gate hung with prayer tablets' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_6755.jpg', caption: { zh: '松樹下的寺院屋簷', en: 'Temple eaves beneath the pines' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "47mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_6765.jpg', caption: { zh: '門框裡框住的另一座殿', en: 'Another hall framed inside the doorway' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_6767.jpg', caption: { zh: '石欄杆與彩繪屋簷', en: 'Stone balustrades and painted eaves' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_6784.jpg', caption: { zh: '遠山下的河與古村', en: 'A river and an old village below distant mountains' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_6796.jpg', caption: { zh: '水邊的韓式樓閣', en: 'A Korean pavilion by the water' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "35mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_6798.jpg', caption: { zh: '橫過溪水的踏石', en: 'Stepping stones crossing the stream' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_6800.jpg', caption: { zh: '河面倒映著月精橋', en: 'Woljeonggyo Bridge reflected in the river' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "29mm", "aperture": "f/10", "shutter": "1/200s", "iso": "100"} }
+    { id: 'meizhu-3', name: { zh: '閩南・武當山・西安', en: 'Southern Fujian, Wudang & Xi’an' }, year: '2025.01', cover: 'img_5479.jpg', coverDir: 'wudang', coverPos: '62%',
+      intro: { zh: '梅竹書院第三屆：經小三通到廈門、泉州，搭纜車上武當山，再搭夜車到冬天的西安。', en: 'Meizhu Academy, third edition: across to Xiamen and Quanzhou, up Wudang by cable car, then a night train to Xi’an in winter.' },
+      chapters: [
+        { key: 'xiamen-quanzhou', date: '1.08–1.11', name: { zh: '廈門・泉州', en: 'Xiamen & Quanzhou' }, dir: 'xiamen-quanzhou', cover: 'img_5365.jpg',
+          note: { zh: '經小三通到廈門，在泉州看古寺、石橋與夕陽。', en: 'Across to Xiamen, then old temples, stone bridges and sunsets in Quanzhou.' },
+          photos: [
+            { file: 'img_5035.jpg', caption: { zh: '落日沉進樓群之間', en: 'The setting sun sinking between buildings' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "152mm", "aperture": "f/5", "shutter": "1/200s", "iso": "800"} },
+            { file: 'img_5048.jpg', caption: { zh: '藍天下的塔頂', en: 'A pagoda top under a blue sky' }, w: 2000, h: 1298, exif: {"camera": "Canon EOS 700D", "focal": "40mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_5063.jpg', caption: { zh: '寺院大殿前的人潮', en: 'Crowds in front of the temple’s main hall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "160"} },
+            { file: '2d2902f6-9dfc-4e8e-bb39-7b3b1a0f9ada.jpg', caption: { zh: '夕陽前的古塔剪影', en: 'An old pagoda silhouetted against the sunset' }, w: 901, h: 901, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_5127.jpg', caption: { zh: '夜裡亮燈的塔', en: 'A pagoda lit up at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/4", "shutter": "1/25s", "iso": "6400"} },
+            { file: 'img_5224.jpg', caption: { zh: '滿樹轉紅的葉子', en: 'A tree full of leaves turned red' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "48mm", "aperture": "f/7.1", "shutter": "1/100s", "iso": "100"} },
+            { file: 'img_5236.jpg', caption: { zh: '樹叢裡的紅牆建築', en: 'A red-walled building among the trees' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "46mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_5277.jpg', caption: { zh: '伸向對岸的洛陽橋', en: 'Luoyang Bridge stretching to the far shore' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/9", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_5365.jpg', caption: { zh: '彩繪屋脊上的塔尖', en: 'A pagoda finial above a painted roof ridge' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_5377.jpg', caption: { zh: '石橋盡頭的牌樓與遊客', en: 'An archway at the end of the stone bridge, and visitors' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} }
+          ] },
+        { key: 'wudang', date: '1.12', name: { zh: '武當山', en: 'Wudang Mountains' }, dir: 'wudang', cover: 'img_5479.jpg',
+          note: { zh: '搭纜車上武當山，看索道穿過群峰。', en: 'Up by cable car, the ropeway threading through the peaks.' },
+          photos: [
+            { file: 'img_5415.jpg', caption: { zh: '山霧中的道觀屋頂', en: 'Taoist temple roofs in the mountain mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_5421.jpg', caption: { zh: '鐵鍊上鎖滿的同心鎖', en: 'Chains crowded with love locks' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_5479.jpg', caption: { zh: '越過山谷的纜車', en: 'Cable cars crossing the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "50mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_5549.jpg', caption: { zh: '岩縫間的一張紙鈔', en: 'A banknote caught in a crack in the rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/22", "shutter": "1/40s", "iso": "3200"} },
+            { file: 'img_5551.jpg', caption: { zh: '夕陽下的飛簷', en: 'Upturned eaves at sunset' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "46mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} },
+            { file: 'img_5553.jpg', caption: { zh: '黃昏時的山稜線', en: 'The ridgeline at dusk' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} }
+          ] },
+        { key: 'xian-2025', date: '1.13–1.15', name: { zh: '西安・冬', en: 'Xi’an in winter' }, dir: 'xian-2025', cover: 'img_5738.jpg',
+          note: { zh: '從武當山搭夜車抵達，冬天再訪兵馬俑與古城。', en: 'In by night train from Wudang: the Terracotta Army and the old city in winter.' },
+          photos: [
+            { file: 'img_5634.jpg', caption: { zh: '枯枝間的圓月', en: 'A full moon between bare branches' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/6.3", "shutter": "1/320s", "iso": "4000"} },
+            { file: 'img_5738.jpg', caption: { zh: '坑裡一排排的兵馬俑', en: 'Row upon row of terracotta warriors in the pit' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "227mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "3200"} },
+            { file: 'img_5776.jpg', caption: { zh: '人群圍著展櫃裡的兵馬俑', en: 'A crowd around a terracotta warrior in a display case' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "6400"} }
+          ] }
       ] },
-
-    { id: 'daegu', name: { zh: '大邱', en: 'Daegu' }, year: '2025.09', cover: 'img_6503.jpg',
-      intro: { zh: '在大邱街頭走走：教堂、韓屋改建的星巴克，和入夜後的霓虹。', en: 'Walking the streets of Daegu: a cathedral, a hanok Starbucks, and neon after dark.' },
-      photos: [
-        { file: 'img_6440.jpg', caption: { zh: '電線交錯的街道', en: 'A street crisscrossed with power lines' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "640"} },
-        { file: 'img_6448.jpg', caption: { zh: '城市後方的電視塔', en: 'A TV tower behind the city' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_6503.jpg', caption: { zh: '雙尖塔的紅磚教堂', en: 'A red-brick church with twin spires' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/10", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_6509.jpg', caption: { zh: '韓屋造型的星巴克', en: 'A hanok-style Starbucks' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "39mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "100"} },
-        { file: 'img_6526.jpg', caption: { zh: '霓虹招牌亮起的夜街', en: 'A night street lit by neon signs' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "42mm", "aperture": "f/20", "shutter": "1/20s", "iso": "800"} }
-      ] },
-
-    { id: 'wudang', name: { zh: '武當山', en: 'Wudang Mountains' }, year: '2025.01', cover: 'img_5479.jpg', coverPos: '62%',
-      intro: { zh: '梅竹書院第三屆，搭纜車上武當山，看索道穿過群峰。', en: 'Meizhu Academy, third edition: up Wudang by cable car, the ropeway threading through the peaks.' },
-      photos: [
-        { file: 'img_5415.jpg', caption: { zh: '山霧中的道觀屋頂', en: 'Taoist temple roofs in the mountain mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_5421.jpg', caption: { zh: '鐵鍊上鎖滿的同心鎖', en: 'Chains crowded with love locks' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_5479.jpg', caption: { zh: '越過山谷的纜車', en: 'Cable cars crossing the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "50mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_5549.jpg', caption: { zh: '岩縫間的一張紙鈔', en: 'A banknote caught in a crack in the rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/22", "shutter": "1/40s", "iso": "3200"} },
-        { file: 'img_5551.jpg', caption: { zh: '夕陽下的飛簷', en: 'Upturned eaves at sunset' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "46mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} },
-        { file: 'img_5553.jpg', caption: { zh: '黃昏時的山稜線', en: 'The ridgeline at dusk' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "31mm", "aperture": "f/6.3", "shutter": "1/100s", "iso": "100"} }
-      ] },
-
-    { id: 'xian-2025', name: { zh: '西安・冬', en: 'Xi’an · Winter' }, year: '2025.01', cover: 'img_5738.jpg', coverPos: '50%',
-      intro: { zh: '梅竹書院第三屆，從武當山搭夜車抵達，冬天再訪兵馬俑與古城。', en: 'Meizhu Academy, third edition: in by night train from Wudang, the Terracotta Army and the old city in winter.' },
-      photos: [
-        { file: 'img_5634.jpg', caption: { zh: '枯枝間的圓月', en: 'A full moon between bare branches' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/6.3", "shutter": "1/320s", "iso": "4000"} },
-        { file: 'img_5738.jpg', caption: { zh: '坑裡一排排的兵馬俑', en: 'Row upon row of terracotta warriors in the pit' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "227mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "3200"} },
-        { file: 'img_5776.jpg', caption: { zh: '人群圍著展櫃裡的兵馬俑', en: 'A crowd around a terracotta warrior in a display case' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "79mm", "aperture": "f/4.5", "shutter": "1/60s", "iso": "6400"} }
-      ] },
-
-    { id: 'xiamen-quanzhou', name: { zh: '廈門・泉州', en: 'Xiamen & Quanzhou' }, year: '2025.01', cover: 'img_5365.jpg',
-      intro: { zh: '梅竹書院第三屆的起點：經小三通到廈門，在泉州看古寺、石橋與夕陽。', en: 'Where the third Meizhu Academy trip began: across to Xiamen, then old temples, stone bridges and sunsets in Quanzhou.' },
-      photos: [
-        { file: 'img_5035.jpg', caption: { zh: '落日沉進樓群之間', en: 'The setting sun sinking between buildings' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "152mm", "aperture": "f/5", "shutter": "1/200s", "iso": "800"} },
-        { file: 'img_5048.jpg', caption: { zh: '藍天下的塔頂', en: 'A pagoda top under a blue sky' }, w: 2000, h: 1298, exif: {"camera": "Canon EOS 700D", "focal": "40mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_5063.jpg', caption: { zh: '寺院大殿前的人潮', en: 'Crowds in front of the temple’s main hall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "160"} },
-        { file: '2d2902f6-9dfc-4e8e-bb39-7b3b1a0f9ada.jpg', caption: { zh: '夕陽前的古塔剪影', en: 'An old pagoda silhouetted against the sunset' }, w: 901, h: 901, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_5127.jpg', caption: { zh: '夜裡亮燈的塔', en: 'A pagoda lit up at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/4", "shutter": "1/25s", "iso": "6400"} },
-        { file: 'img_5224.jpg', caption: { zh: '滿樹轉紅的葉子', en: 'A tree full of leaves turned red' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "48mm", "aperture": "f/7.1", "shutter": "1/100s", "iso": "100"} },
-        { file: 'img_5236.jpg', caption: { zh: '樹叢裡的紅牆建築', en: 'A red-walled building among the trees' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "46mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_5277.jpg', caption: { zh: '伸向對岸的洛陽橋', en: 'Luoyang Bridge stretching to the far shore' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "32mm", "aperture": "f/9", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_5365.jpg', caption: { zh: '彩繪屋脊上的塔尖', en: 'A pagoda finial above a painted roof ridge' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_5377.jpg', caption: { zh: '石橋盡頭的牌樓與遊客', en: 'An archway at the end of the stone bridge, and visitors' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/320s", "iso": "100"} }
-      ] },
-
-    { id: 'hokuriku', name: { zh: '北陸', en: 'Hokuriku' }, year: '2024.08', cover: 'img_0293.jpg',
+    { id: 'hokuriku', name: { zh: '北陸', en: 'Hokuriku' }, year: '2024.08', cover: 'img_0293.jpg', coverDir: 'hokuriku',
       intro: { zh: '和家人從富山一路往山裡走，立山黑部、上高地到白川鄉的夏天。', en: 'A family summer from Toyama into the mountains: Tateyama Kurobe, Kamikōchi and Shirakawa-gō.' },
-      photos: [
-        { file: 'img_9784.jpg', caption: { zh: '沿山邊駛過的橘色小火車', en: 'A little orange train running along the mountainside' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_9846.jpg', caption: { zh: '月台上停靠的電車', en: 'A train waiting at the platform' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_9944.jpg', caption: { zh: '山谷裡的湖', en: 'A lake in the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_9991.jpg', caption: { zh: '越過山林的空中纜車', en: 'A ropeway gondola crossing the forest' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/6.3", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_9995.jpg', caption: { zh: '雲下的群山與湖', en: 'Mountains and a lake beneath the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_0031.jpg', caption: { zh: '黑部平的石碑', en: 'The stone marker at Kurobedaira' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/9", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_0058.jpg', caption: { zh: '山腳下的水壩', en: 'A dam at the foot of the mountain' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_0079.jpg', caption: { zh: '兩側山壁間的溪谷', en: 'A gorge between two mountain walls' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_0223.jpg', caption: { zh: '上高地與河童橋', en: 'Kamikōchi and the Kappa Bridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "27mm", "aperture": "f/5.6", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_0225.jpg', caption: { zh: '河灘與遠處的山谷', en: 'A riverbank and the valley beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/5.6", "shutter": "1/640s", "iso": "100"} },
-        { file: 'img_0254-2.jpg', caption: { zh: '夜裡亮著的便利商店', en: 'A convenience store glowing at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/20", "shutter": "1/25s", "iso": "1600"} },
-        { file: 'img_0271.jpg', caption: { zh: '草叢後的合掌屋', en: 'A gasshō-zukuri house behind tall grass' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_0282.jpg', caption: { zh: '稻田邊的茅草屋', en: 'A thatched house beside the rice field' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_0286.jpg', caption: { zh: '山谷裡的合掌村', en: 'The gasshō village in the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_0291.jpg', caption: { zh: '錯落的茅草屋頂', en: 'Thatched roofs at every angle' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/320s", "iso": "200"} },
-        { file: 'img_0293.jpg', caption: { zh: '俯瞰白川鄉合掌村', en: 'Looking down on the gasshō village of Shirakawa-gō' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/200s", "iso": "125"} }
+      chapters: [
+        { key: 'start', date: '8.17', name: { zh: '啟程', en: 'Setting off' }, dir: 'hokuriku',
+          photos: [
+            { file: 'img_9784.jpg', caption: { zh: '沿山邊駛過的橘色小火車', en: 'A little orange train running along the mountainside' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/5", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_9846.jpg', caption: { zh: '月台上停靠的電車', en: 'A train waiting at the platform' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/5", "shutter": "1/125s", "iso": "100"} }
+          ] },
+        { key: 'kurobe', date: '8.18', name: { zh: '立山黑部', en: 'Tateyama Kurobe' }, dir: 'hokuriku',
+          photos: [
+            { file: 'img_9944.jpg', caption: { zh: '山谷裡的湖', en: 'A lake in the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_9991.jpg', caption: { zh: '越過山林的空中纜車', en: 'A ropeway gondola crossing the forest' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "70mm", "aperture": "f/6.3", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_9995.jpg', caption: { zh: '雲下的群山與湖', en: 'Mountains and a lake beneath the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_0031.jpg', caption: { zh: '黑部平的石碑', en: 'The stone marker at Kurobedaira' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/9", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_0058.jpg', caption: { zh: '山腳下的水壩', en: 'A dam at the foot of the mountain' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_0079.jpg', caption: { zh: '兩側山壁間的溪谷', en: 'A gorge between two mountain walls' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} }
+          ] },
+        { key: 'kamikochi', date: '8.19', name: { zh: '上高地', en: 'Kamikōchi' }, dir: 'hokuriku',
+          photos: [
+            { file: 'img_0223.jpg', caption: { zh: '上高地與河童橋', en: 'Kamikōchi and the Kappa Bridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "27mm", "aperture": "f/5.6", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_0225.jpg', caption: { zh: '河灘與遠處的山谷', en: 'A riverbank and the valley beyond' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "24mm", "aperture": "f/5.6", "shutter": "1/640s", "iso": "100"} },
+            { file: 'img_0254-2.jpg', caption: { zh: '夜裡亮著的便利商店', en: 'A convenience store glowing at night' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "157mm", "aperture": "f/20", "shutter": "1/25s", "iso": "1600"} }
+          ] },
+        { key: 'shirakawa', date: '8.20', name: { zh: '白川鄉', en: 'Shirakawa-gō' }, dir: 'hokuriku',
+          photos: [
+            { file: 'img_0271.jpg', caption: { zh: '草叢後的合掌屋', en: 'A gasshō-zukuri house behind tall grass' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_0282.jpg', caption: { zh: '稻田邊的茅草屋', en: 'A thatched house beside the rice field' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_0286.jpg', caption: { zh: '山谷裡的合掌村', en: 'The gasshō village in the valley' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_0291.jpg', caption: { zh: '錯落的茅草屋頂', en: 'Thatched roofs at every angle' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/320s", "iso": "200"} },
+            { file: 'img_0293.jpg', caption: { zh: '俯瞰白川鄉合掌村', en: 'Looking down on the gasshō village of Shirakawa-gō' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "135mm", "aperture": "f/5", "shutter": "1/200s", "iso": "125"} }
+          ] }
       ] },
-
-    { id: 'xiamen', name: { zh: '廈門', en: 'Xiamen' }, year: '2024.07', cover: 'img_8748.jpg',
-      intro: { zh: '梅竹書院第二屆的起點與終點：渡輪、海風，和飛往北京前的機場。', en: 'Where the second Meizhu Academy trip began and ended: ferries, sea breeze, and the airport before Beijing.' },
-      photos: [
-        { file: 'img_8151.jpg', caption: { zh: '石牆邊的陳嘉庚紀念柱', en: 'The Tan Kah Kee memorial column beside a stone wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "38mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_8228.jpg', caption: { zh: '海邊的摩天樓', en: 'Skyscrapers by the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/11", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_8235-2.jpg', caption: { zh: '大橋下駛來的渡輪', en: 'A ferry coming in under the bridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "172mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_8241-2.jpg', caption: { zh: '渡輪與後面的跨海大橋', en: 'A ferry with the cross-sea bridge behind it' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "172mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_8250.jpg', caption: { zh: '小島上的紅白燈塔', en: 'A red-and-white lighthouse on a small island' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/10", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_8349.jpg', caption: { zh: '從石洞窺探亭子', en: 'Peeking at a pavilion through a hole in the rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "37mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_8391.jpg', caption: { zh: '望向遠方的鄭成功像', en: 'The statue of Koxinga gazing into the distance' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_8693.jpg', caption: { zh: '蘭亭集序', en: 'Preface to the Orchid Pavilion Poems' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "320"} },
-        { file: 'img_8736.jpg', caption: { zh: '藍天裡的一架飛機', en: 'A plane in the blue sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "186mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_8739.jpg', caption: { zh: '跑道上滑行的客機', en: 'A jet taxiing on the runway' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/6.3", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_8740.jpg', caption: { zh: '停在機場的客機', en: 'A jet parked at the airport' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "200mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "100"} },
-        { file: 'img_8746.jpg', caption: { zh: '機翼下忙著的地勤', en: 'Ground crew at work beneath the wing' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "113mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_8748.jpg', caption: { zh: '圓窗外的機尾', en: 'A tail fin outside the round window' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "143mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_8751.jpg', caption: { zh: '昏暗機艙裡的一扇窗', en: 'A single window in a dark cabin' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
-        { file: 'img_8756.jpg', caption: { zh: '從空中看海邊的城市', en: 'A seaside city from the air' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_8759.jpg', caption: { zh: '俯瞰廈門市', en: 'Looking down on Xiamen' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_8761.jpg', caption: { zh: '機翼下的城市', en: 'The city below the wing' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/9", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_8768.jpg', caption: { zh: '雲下層疊的東南丘陵', en: 'Layered southeastern hills beneath the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "89mm", "aperture": "f/9", "shutter": "1/500s", "iso": "100"} }
+    { id: 'meizhu-2', name: { zh: '廈門・北京・西安', en: 'Xiamen, Beijing & Xi’an' }, year: '2024.07', cover: 'img_8998.jpg', coverDir: 'beijing', coverPos: '55%',
+      intro: { zh: '梅竹書院第二屆：從廈門出發，飛到北京，再搭高鐵到夏天的西安。', en: 'Meizhu Academy, second edition: from Xiamen, a flight to Beijing, then high-speed rail to Xi’an in summer.' },
+      chapters: [
+        { key: 'xiamen', date: '7.31–8.03', name: { zh: '廈門', en: 'Xiamen' }, dir: 'xiamen', cover: 'img_8748.jpg',
+          note: { zh: '渡輪、海風，和飛往北京前的機場。', en: 'Ferries, sea breeze, and the airport before Beijing.' },
+          photos: [
+            { file: 'img_8151.jpg', caption: { zh: '石牆邊的陳嘉庚紀念柱', en: 'The Tan Kah Kee memorial column beside a stone wall' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "38mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_8228.jpg', caption: { zh: '海邊的摩天樓', en: 'Skyscrapers by the sea' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/11", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_8235-2.jpg', caption: { zh: '大橋下駛來的渡輪', en: 'A ferry coming in under the bridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "172mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_8241-2.jpg', caption: { zh: '渡輪與後面的跨海大橋', en: 'A ferry with the cross-sea bridge behind it' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "172mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_8250.jpg', caption: { zh: '小島上的紅白燈塔', en: 'A red-and-white lighthouse on a small island' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/10", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_8349.jpg', caption: { zh: '從石洞窺探亭子', en: 'Peeking at a pavilion through a hole in the rock' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "37mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_8391.jpg', caption: { zh: '望向遠方的鄭成功像', en: 'The statue of Koxinga gazing into the distance' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_8693.jpg', caption: { zh: '蘭亭集序', en: 'Preface to the Orchid Pavilion Poems' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "43mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "320"} },
+            { file: 'img_8736.jpg', caption: { zh: '藍天裡的一架飛機', en: 'A plane in the blue sky' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "186mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_8739.jpg', caption: { zh: '跑道上滑行的客機', en: 'A jet taxiing on the runway' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "178mm", "aperture": "f/6.3", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_8740.jpg', caption: { zh: '停在機場的客機', en: 'A jet parked at the airport' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "200mm", "aperture": "f/5.6", "shutter": "1/320s", "iso": "100"} },
+            { file: 'img_8746.jpg', caption: { zh: '機翼下忙著的地勤', en: 'Ground crew at work beneath the wing' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "113mm", "aperture": "f/5.6", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_8748.jpg', caption: { zh: '圓窗外的機尾', en: 'A tail fin outside the round window' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "143mm", "aperture": "f/7.1", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_8751.jpg', caption: { zh: '昏暗機艙裡的一扇窗', en: 'A single window in a dark cabin' }, w: 1333, h: 2000, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/125s", "iso": "100"} },
+            { file: 'img_8756.jpg', caption: { zh: '從空中看海邊的城市', en: 'A seaside city from the air' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_8759.jpg', caption: { zh: '俯瞰廈門市', en: 'Looking down on Xiamen' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_8761.jpg', caption: { zh: '機翼下的城市', en: 'The city below the wing' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/9", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_8768.jpg', caption: { zh: '雲下層疊的東南丘陵', en: 'Layered southeastern hills beneath the clouds' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "89mm", "aperture": "f/9", "shutter": "1/500s", "iso": "100"} }
+          ] },
+        { key: 'beijing', date: '8.04–8.05', name: { zh: '北京', en: 'Beijing' }, dir: 'beijing', cover: 'img_8998.jpg',
+          note: { zh: '長城、頤和園，還有夜裡的天安門。', en: 'The Great Wall, the Summer Palace, and Tiananmen at night.' },
+          photos: [
+            { file: 'img_8835.jpg', caption: { zh: '霧裡的長城塔樓', en: 'A Great Wall watchtower in the fog' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
+            { file: 'img_8885.jpg', caption: { zh: '雨霧籠罩的山頭城樓', en: 'A hilltop tower wrapped in rain and mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
+            { file: 'img_8996.jpg', caption: { zh: '沿山脊蜿蜒的長城', en: 'The Great Wall winding along the ridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_8998.jpg', caption: { zh: '一路爬上山頂的城牆', en: 'The wall climbing all the way to the summit' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
+            { file: 'img_9218.jpg', caption: { zh: '天安門與車軌', en: 'Tiananmen and light trails' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "64mm", "aperture": "f/25", "shutter": "8s", "iso": "100"} },
+            { file: 'img_9250.jpg', caption: { zh: '頤和園一景', en: 'A view of the Summer Palace' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "44mm", "aperture": "f/13", "shutter": "1/400s", "iso": "100"} }
+          ] },
+        { key: 'xian-2024', date: '8.06–8.08', name: { zh: '西安・夏', en: 'Xi’an in summer' }, dir: 'xian-2024', cover: 'img_9459.jpg',
+          note: { zh: '搭高鐵來到西安：西交大、兵馬俑、古城牆和回民街。', en: 'By high-speed rail: XJTU, the Terracotta Army, the city wall and the Muslim Quarter.' },
+          photos: [
+            { file: 'img_9332.jpg', caption: { zh: '攤位上的手繪小畫框', en: 'Small hand-painted frames at a stall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_9362.jpg', caption: { zh: '整片坑道的兵馬俑', en: 'A whole pit of terracotta warriors' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/100s", "iso": "800"} },
+            { file: 'img_9393.jpg', caption: { zh: '西安交大的校門', en: 'The gate of Xi’an Jiaotong University' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
+            { file: 'img_9459.jpg', caption: { zh: '陰天裡的大雁塔', en: 'The Giant Wild Goose Pagoda on an overcast day' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/250s", "iso": "100"} },
+            { file: 'img_9642.jpg', caption: { zh: '回民街的烤串', en: 'Skewers on the grill at Muslim Quarter' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/5", "shutter": "1/60s", "iso": "100"} },
+            { file: 'img_9647.jpg', caption: { zh: '掛滿題字的扇子', en: 'Fans covered in calligraphy' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "500"} },
+            { file: 'img_9685.jpg', caption: { zh: '大樓之間的古樓', en: 'An old tower between modern buildings' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} }
+          ] }
       ] },
-
-    { id: 'xian-2024', name: { zh: '西安・夏', en: 'Xi’an · Summer' }, year: '2024.07', cover: 'img_9459.jpg', coverPos: '30%',
-      intro: { zh: '梅竹書院第二屆搭高鐵來到西安：西交大、兵馬俑、古城牆和回民街。', en: 'Meizhu Academy, second edition, by high-speed rail to Xi\'an: XJTU, the Terracotta Army, the city wall and the Muslim Quarter.' },
-      photos: [
-        { file: 'img_9332.jpg', caption: { zh: '攤位上的手繪小畫框', en: 'Small hand-painted frames at a stall' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/10", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_9362.jpg', caption: { zh: '整片坑道的兵馬俑', en: 'A whole pit of terracotta warriors' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/100s", "iso": "800"} },
-        { file: 'img_9393.jpg', caption: { zh: '西安交大的校門', en: 'The gate of Xi’an Jiaotong University' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "18mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_9459.jpg', caption: { zh: '陰天裡的大雁塔', en: 'The Giant Wild Goose Pagoda on an overcast day' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/7.1", "shutter": "1/250s", "iso": "100"} },
-        { file: 'img_9642.jpg', caption: { zh: '回民街的烤串', en: 'Skewers on the grill at Muslim Quarter' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "34mm", "aperture": "f/5", "shutter": "1/60s", "iso": "100"} },
-        { file: 'img_9647.jpg', caption: { zh: '掛滿題字的扇子', en: 'Fans covered in calligraphy' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/5.6", "shutter": "1/80s", "iso": "500"} },
-        { file: 'img_9685.jpg', caption: { zh: '大樓之間的古樓', en: 'An old tower between modern buildings' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/7.1", "shutter": "1/400s", "iso": "100"} }
-      ] },
-
-    { id: 'beijing', name: { zh: '北京', en: 'Beijing' }, year: '2024.07', cover: 'img_8998.jpg', coverPos: '55%',
-      intro: { zh: '梅竹書院第二屆的北京：長城、頤和園，還有夜裡的天安門。', en: 'Meizhu Academy, second edition, in Beijing: the Great Wall, the Summer Palace, and Tiananmen at night.' },
-      photos: [
-        { file: 'img_8835.jpg', caption: { zh: '霧裡的長城塔樓', en: 'A Great Wall watchtower in the fog' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "250mm", "aperture": "f/8", "shutter": "1/500s", "iso": "100"} },
-        { file: 'img_8885.jpg', caption: { zh: '雨霧籠罩的山頭城樓', en: 'A hilltop tower wrapped in rain and mist' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "100mm", "aperture": "f/8", "shutter": "1/400s", "iso": "100"} },
-        { file: 'img_8996.jpg', caption: { zh: '沿山脊蜿蜒的長城', en: 'The Great Wall winding along the ridge' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/200s", "iso": "100"} },
-        { file: 'img_8998.jpg', caption: { zh: '一路爬上山頂的城牆', en: 'The wall climbing all the way to the summit' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "55mm", "aperture": "f/8", "shutter": "1/160s", "iso": "100"} },
-        { file: 'img_9218.jpg', caption: { zh: '天安門與車軌', en: 'Tiananmen and light trails' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "64mm", "aperture": "f/25", "shutter": "8s", "iso": "100"} },
-        { file: 'img_9250.jpg', caption: { zh: '頤和園一景', en: 'A view of the Summer Palace' }, w: 2000, h: 1333, exif: {"camera": "Canon EOS 700D", "focal": "44mm", "aperture": "f/13", "shutter": "1/400s", "iso": "100"} }
-      ] },
-
-    /* 單張：不屬於任何城市的照片。title（標題）可以不寫，有寫才會顯示。 */
     { id: 'singles', kind: 'singles', name: { zh: '單張', en: 'Singles' }, cover: 'r0006865.jpg',
       intro: { zh: '不屬於任何城市、但想留下的照片。', en: 'Photographs outside the city series.' },
       photos: [

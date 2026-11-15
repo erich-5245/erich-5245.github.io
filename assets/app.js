@@ -30,7 +30,15 @@ const altOf=m=>m?T(m.caption||m.title||m.place||''):'';
 const shapeOf=x=>x&&x.w&&x.h?(x.h>x.w?'p':'l'):((x&&x.s)||'l');
 const ratioOf=x=>x&&x.w&&x.h?x.h/x.w:(shapeOf(x)==='p'?4/3:3/4);
 const yt=id=>`https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-const coverOf=s=>`photos/series/${s.id}/${s.cover||(s.photos[0]&&s.photos[0].file)||'cover.jpg'}`;
+/* 旅程系列：章節裡的照片攤平成 s.photos（每張記得自己的資料夾 dir 和章節 ch）；舊的城市代號對應到旅程＋章節 */
+const ALIAS={};
+C.series.forEach(s=>{if(!s.chapters)return;
+  s.photos=s.chapters.flatMap(c=>c.photos.map(p=>Object.assign(p,{dir:c.dir,ch:c.key})));
+  let n=0;s.chapters.forEach(c=>{c.from=n;n+=c.photos.length;c.to=n;if(c.dir!==s.id&&!ALIAS[c.dir])ALIAS[c.dir]={id:s.id,ch:c.key}});
+});
+const findSeries=id=>C.series.find(s=>s.id===id)||(ALIAS[id]&&C.series.find(s=>s.id===ALIAS[id].id));
+const chapterOf=id=>{const a=ALIAS[id];if(!a)return null;const s=findSeries(id);return s&&s.chapters.find(c=>c.key===a.ch)};
+const coverOf=s=>`photos/series/${s.coverDir||s.id}/${s.cover||(s.photos[0]&&s.photos[0].file)||'cover.jpg'}`;
 const isLoose=s=>!!s&&s.kind==='singles';
 const cities=()=>C.series.filter(s=>!isLoose(s));
 const sname=s=>isLoose(s)?T(s.name):T(s.name)+T(UI.seriesSuffix);
@@ -71,7 +79,7 @@ function workBlock(w){
       ${v.link?`<p style="margin:-8px 0 26px"><a class="seclink" href="${v.link}" target="_blank" rel="noopener">${L==='zh'?'查看得獎頁面 ↗':'View on the awards site ↗'}</a></p>`:''}
       ${w.intro?`<div class="wsec"><span class="label">${L==='zh'?'作品簡介':'About the work'}</span><p class="wlead">${f(T(w.intro))}</p></div>`:''}
       ${w.composition?`<div class="wsec"><span class="label">${L==='zh'?'構圖理念':'Composition'}</span><p class="wbody">${f(T(w.composition))}</p></div>`:''}
-      <p class="place" style="margin:4px 0 14px">${f(T(w.place))}${w.from&&C.series.find(x=>x.id===w.from)?` · <a class="seclink" href="#s-${w.from}">${sname(C.series.find(x=>x.id===w.from))} →</a>`:''}</p>${exifRow(w.exif)}
+      <p class="place" style="margin:4px 0 14px">${f(T(w.place))}${w.from&&findSeries(w.from)?` · <a class="seclink" href="#s-${w.from}">${sname(findSeries(w.from))} →</a>`:''}</p>${exifRow(w.exif)}
     </div></div>`;
 }
 function home(){
@@ -90,7 +98,7 @@ function home(){
       <section class="blk" id="works">
         <div class="sechead"><h3>${L==='zh'?'Works<small>影像作品</small>':'Works'}</h3></div>
         ${C.works.map(workBlock).join('')}
-        ${C.films.map(fm=>{const se=C.series.find(x=>x.id===fm.series);return `<div class="film2">
+        ${C.films.map(fm=>{const se=findSeries(fm.series);return `<div class="film2">
           <a class="thumb" href="https://youtu.be/${fm.yt}" target="_blank" rel="noopener" style="display:block">${ph('w',fm.thumb||yt(fm.yt),'#1c1d1f')}<span class="play">▶</span></a>
           <div class="row2"><div><span class="label">${T(UI.film)}</span><h4>${f(T(fm.title))}</h4></div><div class="mono">${f(fm.year)} · ${f(fm.runtime)}${se?` · <a class="seclink" href="#s-${se.id}">${T(UI.inSeries)}：${sname(se)} →</a>`:''}</div></div>
           <div class="filmtext"><p class="wbody" style="margin:14px 0 18px">${f(T(fm.note))}</p>
@@ -108,7 +116,16 @@ function home(){
       <footer class="mono">© 2026 ${T(C.name)}</footer>
     </div>`;
 }
+function chaptersBlock(s){
+  if(!s.chapters)return `<div class="masonry" data-mason="${s.id}"></div>`;
+  const toc=s.chapters.length>1?`<nav class="chtoc">${s.chapters.map(c=>`<button data-go="ch-${c.key}"><span class="mono">${f(c.date)}</span>${f(T(c.name))}</button>`).join('')}</nav>`:'';
+  return toc+s.chapters.map(c=>`<section class="chap" id="ch-${c.key}">
+    <div class="chhead"><span class="mono">${f(c.date)}</span><h3>${f(c.name.zh)}${L==='en'||c.name.en!==c.name.zh?`<em>${f(c.name.en)}</em>`:''}</h3><span class="mono">${c.photos.length} ${T(UI.photos)}</span></div>
+    ${c.note?`<p class="chnote">${f(T(c.note))}</p>`:''}
+    <div class="masonry" data-mason="${s.id}" data-from="${c.from}" data-to="${c.to}"></div></section>`).join('');
+}
 function seriesPage(id){
+  if(ALIAS[id]){pendingScroll=pendingScroll||'ch-'+ALIAS[id].ch;id=ALIAS[id].id}
   const i=C.series.findIndex(s=>s.id===id); if(i<0) return home();
   const s=C.series[i], nx=C.series[(i+1)%C.series.length];
   return `${nav(true)}<div class="split">
@@ -125,7 +142,7 @@ function seriesPage(id){
       ${C.films.filter(x=>x.series===s.id).map(fm=>`<a class="filmstrip" href="https://youtu.be/${fm.yt}" target="_blank" rel="noopener">
         <div class="thumb" style="position:relative">${ph('w',fm.thumb||yt(fm.yt),'#1c1d1f')}<span class="play" style="position:absolute;inset:0;margin:auto;width:56px;height:56px;border:1px solid rgba(236,235,231,.75);border-radius:50%;display:grid;place-items:center">▶</span></div>
         <div><span class="label">${T(UI.film)}</span><h4 style="font-family:var(--f-zh-title);font-size:22px;letter-spacing:.08em;margin:6px 0">${f(T(fm.title))}</h4><div class="mono">${f(fm.year)} · ${f(fm.runtime)}</div><p style="color:var(--gold);margin:12px 0 0;font-size:13px">${T(UI.watchYt)}</p></div></a>`).join('')}
-      <div class="masonry" data-mason="${s.id}"></div>
+      ${chaptersBlock(s)}
       <a class="nextlink" href="#s-${nx.id}"><span><span class="label">${T(UI.next)}</span><br><span class="nm">${nx.name.zh}</span> <span class="mono">${nx.name.en}</span></span><span style="font-size:28px">→</span></a>
       <footer class="mono">© 2026 ${T(C.name)}</footer>
     </div></div>`;
@@ -166,11 +183,22 @@ function allPage(){
 
 /* 時間軸：依系列的年月排序，每個年月是一步；地點在它第一次出現的那一步亮起 */
 function mapTimeline(pts){
-  const yr=id=>{const se=C.series.find(x=>x.id===id);return se&&se.year||''};
+  /* 每趟旅程是一步（依年月排）；弧線從台灣出發，依章節順序一站接一站，到站時那個點亮起 */
+  const yr=id=>{const se=findSeries(id);return se&&se.year||''};
   const dates=[...new Set(pts.filter(p=>!p.home).flatMap(p=>p.series.map(yr)).filter(Boolean))].sort();
-  const stepOf=pts.map(p=>p.home?-1:Math.min(...p.series.map(id=>dates.indexOf(yr(id))).filter(i=>i>=0)));
-  const trips=[];C.series.filter(se=>!isLoose(se)).forEach(se=>{const i=pts.findIndex(p=>!p.home&&p.series.includes(se.id));if(i>=0)trips.push({p:pts[i],step:dates.indexOf(se.year)})});
-  return {dates,stepOf,trips};
+  const names=p=>p.members?p.members.map(q=>q.zh):[p.zh];
+  const lightAt=pts.map(p=>p.home?-1:Infinity),trips=[];
+  C.series.filter(se=>!isLoose(se)).forEach(se=>{
+    const step=dates.indexOf(se.year);if(step<0)return;
+    const hit=i=>{const p=pts[i];return !p.home&&p.series.some(id=>{const t=findSeries(id);return t&&t.id===se.id})};
+    let seq=[];
+    (se.chapters||[]).forEach(c=>{const nm=T(c.name)&&c.name.zh;
+      pts.map((p,i)=>[i,Math.min(...names(p).map(n=>{const k=nm.indexOf(n);return k<0?1e9:k}))]).filter(([i,k])=>k<1e9&&hit(i)).sort((x,y)=>x[1]-y[1]).forEach(([i])=>{if(!seq.includes(i))seq.push(i)})});
+    pts.forEach((p,i)=>{if(hit(i)&&!seq.includes(i))seq.push(i)});
+    const n=seq.length;seq.forEach((i,j)=>{lightAt[i]=Math.min(lightAt[i],step+(j+1)*.6/n)});
+    trips.push({step,seq});
+  });
+  return {dates,stepOf:lightAt.map(v=>v===Infinity?0:v),trips};
 }
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 function mapScroll(){
@@ -178,8 +206,8 @@ function mapScroll(){
   const n=+getComputedStyle(sc).getPropertyValue('--steps')||1,r=sc.getBoundingClientRect(),run=sc.offsetHeight-innerHeight;
   let p=run>0?Math.min(1,Math.max(0,-r.top/run)):1;if(reduceMotion()||sc.classList.contains('static'))p=1;
   const s=p*n*1.0001;
-  sc.querySelectorAll('.arc').forEach(a=>{const k=+a.dataset.step,t=Math.min(1,Math.max(0,(s-k)/.6));a.style.strokeDashoffset=(1-t).toFixed(3);a.style.opacity=t>0?1:0});
-  let lit=0;sc.querySelectorAll('.mpt').forEach(b=>{const k=+b.dataset.step,on=k<0||s>=k+.55;b.classList.toggle('dim',!on);if(on&&k>=0)lit++});
+  sc.querySelectorAll('.arc').forEach(a=>{const k=+a.dataset.a,t=Math.min(1,Math.max(0,(s-k)/(+a.dataset.b-k)));a.style.strokeDashoffset=(1-t).toFixed(3);a.style.opacity=t>0?1:0});
+  let lit=0;sc.querySelectorAll('.mpt').forEach(b=>{const k=+b.dataset.step,on=k<0||s>=k;b.classList.toggle('dim',!on);if(on&&k>=0)lit++});
   const dates=mapTimeline(mapPoints()).dates,i=Math.min(dates.length-1,Math.floor(s));
   const fd=sc.querySelector('[data-fd]'),fn=sc.querySelector('[data-fn]');
   if(fd)fd.textContent=p>=1?`${dates[0].slice(0,4)} — ${dates[dates.length-1].slice(0,4)}`:dates[Math.max(0,i)];
@@ -220,9 +248,11 @@ function mapBlock(){
     return `<button class="mpt s-${p.side||'r'}${p.home?' home':''}" data-mp="${i}" data-step="${p.home?-1:mapTimeline(pts).stepOf[i]}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%" aria-label="${f(T(p))}"><i></i><span>${f(T(p))}</span></button>`}).join('');
   const T0=mapTimeline(pts),home=pts.find(p=>p.home);
   const hx=home?mapXY(home.lon,home.lat):[50,50];
-  const arcs=T0.trips.map(t=>{const [x,y]=mapXY(t.p.lon,t.p.lat),a=[hx[0]*M.w/100,hx[1]*M.h/100],b=[x*M.w/100,y*M.h/100];
-    const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),cx=(a[0]+b[0])/2-dy*.22,cy=(a[1]+b[1])/2+dx*.22-len*.08;
-    return `<path class="arc" data-step="${t.step}" pathLength="1" d="M${a[0].toFixed(1)},${a[1].toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${b[0].toFixed(1)},${b[1].toFixed(1)}"/>`}).join('');
+  const XY=i=>{const q=pts[i],[x,y]=mapXY(q.lon,q.lat);return [x*M.w/100,y*M.h/100]};
+  const arc=(a,b,t0,t1)=>{const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),cx=(a[0]+b[0])/2-dy*.22,cy=(a[1]+b[1])/2+dx*.22-len*.08;
+    return `<path class="arc" data-a="${t0.toFixed(3)}" data-b="${t1.toFixed(3)}" pathLength="1" d="M${a[0].toFixed(1)},${a[1].toFixed(1)}Q${cx.toFixed(1)},${cy.toFixed(1)} ${b[0].toFixed(1)},${b[1].toFixed(1)}"/>`};
+  const H=[hx[0]*M.w/100,hx[1]*M.h/100];
+  const arcs=T0.trips.map(t=>{const n=t.seq.length;return t.seq.map((i,j)=>arc(j?XY(t.seq[j-1]):H,XY(i),t.step+j*.6/n,t.step+(j+1)*.6/n)).join('')}).join('');
   return `<div class="sechead fsec"><h3 style="font-size:30px">${L==='zh'?'Footprints<small>足跡</small>':'Footprints'}</h3><span class="mono">${L==='zh'?'點一個地方，看那裡的照片':'Pick a place to see its photos'}</span></div>
     <div class="fscroll" data-fscroll style="--steps:${T0.dates.length}"><div class="fstick">
     <div class="fwrap" data-fmap><div class="fmap" style="aspect-ratio:${M.w}/${M.h}"><svg viewBox="0 0 ${M.w} ${M.h}" aria-hidden="true" preserveAspectRatio="none"><path class="land" d="${M.d}"/>${arcs}</svg>${dots}</div>
@@ -231,9 +261,9 @@ function mapBlock(){
 }
 function mapPop(btn){
   const box=btn.closest('[data-fmap]'),pop=box.querySelector('.mpop'),p=mapPoints()[+btn.dataset.mp];
-  const list=p.series.map(id=>C.series.find(s=>s.id===id)).filter(Boolean);
+  const list=p.series.map(id=>{const se=findSeries(id),c=chapterOf(id);return se&&{id,se,c}}).filter(Boolean);
   pop.innerHTML=`<div class="mpop-h">${f(T(p))}${p.members?`<span class="mono">${p.members.map(q=>f(T(q))).join(' · ')}</span>`:''}</div>`+
-    list.map(se=>`<a class="mpop-i" href="#s-${se.id}">${ph('',thumb(coverOf(se)),null,T(se.name))}<span><b>${f(T(se.name))}</b><span class="mono">${se.year?f(se.year)+' · ':''}${se.photos.length} ${T(UI.photos)}</span></span></a>`).join('');
+    list.map(({id,se,c})=>`<a class="mpop-i" href="#s-${id}">${ph('',thumb(c?`photos/series/${c.dir}/${c.cover||c.photos[0].file}`:coverOf(se)),null,T(c?c.name:se.name))}<span><b>${f(T(c?c.name:se.name))}</b><span class="mono">${se.year?f(se.year)+' · ':''}${(c||se).photos.length} ${T(UI.photos)}</span>${c?`<span class="mono mpop-trip">${f(T(se.name))}</span>`:''}</span></a>`).join('');
   pop.hidden=false;box.querySelectorAll('.mpt.on').forEach(b=>b.classList.remove('on'));btn.classList.add('on');pop.dataset.for=btn.dataset.mp;
   if(mapNarrow()){pop.style.left=pop.style.top='';return}
   const bw=box.clientWidth,bh=box.clientHeight,x=btn.offsetLeft,y=btn.offsetTop,pw=pop.offsetWidth,phh=pop.offsetHeight;
@@ -248,7 +278,7 @@ document.addEventListener('mouseover',e=>{if(!canHover())return;const b=e.target
 document.addEventListener('click',e=>{
   const b=e.target.closest('.mpt');
   if(b){const p=mapPoints()[+b.dataset.mp],pop=b.closest('[data-fmap]').querySelector('.mpop');
-    if(p.series.length===1&&(canHover()||pop.dataset.for===b.dataset.mp)){go('s-'+p.series[0]);return}
+    if(p.series.length===1&&(canHover()||pop.dataset.for===b.dataset.mp)){goTo('s-'+p.series[0]);return}
     if(pop.dataset.for===b.dataset.mp&&!canHover()){mapHide(b.closest('[data-fmap]'));return}
     mapPop(b);return}
   if(!e.target.closest('.mpop'))mapHide(document.querySelector('[data-fmap]'));
@@ -258,10 +288,10 @@ addEventListener('resize',()=>{const n=mapNarrow();if(n!==mapWasNarrow){mapWasNa
 /* Pinterest 排法：放進最短的欄，再微裁每欄最後一張讓底部切齊（最多裁 15%） */
 function layoutMasonry(){
   document.querySelectorAll('[data-mason]').forEach(el=>{
-    const key=el.dataset.mason,items=itemsFor(key),W=el.clientWidth;if(!W)return;
-    const n=W<720?2:3,g=12,w=(W-g*(n-1))/n;
+    const key=el.dataset.mason,all=itemsFor(key),a=+(el.dataset.from||0),b=el.dataset.to?+el.dataset.to:all.length,items=all.slice(a,b),W=el.clientWidth;if(!W||!items.length)return;
+    const n=Math.min(W<720?2:3,items.length),g=12,w=(W-g*(n-1))/n;
     const cols=Array.from({length:n},()=>({h:-g,items:[]}));
-    items.forEach((x,i)=>{const h=w*ratioOf(x);const c=cols.reduce((a,b)=>b.h<a.h?b:a);c.items.push({i,h});c.h+=g+h});
+    items.forEach((x,j)=>{const h=w*ratioOf(x);const c=cols.reduce((p,q)=>q.h<p.h?q:p);c.items.push({i:a+j,h});c.h+=g+h});
     const used=cols.filter(c=>c.items.length),T0=Math.min(...used.map(c=>c.h));
     if(used.every(c=>c.h-T0<=0.15*c.items[c.items.length-1].h))used.forEach(c=>{c.items[c.items.length-1].h-=c.h-T0});
     el.innerHTML=cols.map(c=>`<div class="mcol">${c.items.map(it=>`<button data-lb="${key}" data-i="${it.i}" style="height:${it.h.toFixed(1)}px">${ph('',thumb(pathFor(key,it.i)),null,altOf(itemsFor(key)[it.i]))}</button>`).join('')}</div>`).join('');
@@ -295,15 +325,15 @@ function bindHero(){
 function shapesFor(key){
   if(key==='picks')return C.singles.map(shapeOf);
   if(key==='work')return ['img'];
-  const s=C.series.find(x=>x.id===key);return s?s.photos.map(shapeOf):[];
+  const s=findSeries(key);return s?s.photos.map(shapeOf):[];
 }
 function itemsFor(key){
   if(key==='picks')return C.singles;
-  const s=C.series.find(x=>x.id===key);return s?s.photos:[];
+  const s=findSeries(key);return s?s.photos:[];
 }
 function pathFor(key,i){
   if(key==='picks')return `photos/${C.singles[i].file}`;
-  const se=C.series.find(x=>x.id===key);return se?`photos/series/${key}/${se.photos[i].file}`:'';
+  const se=findSeries(key);const p=se&&se.photos[i];return p?`photos/series/${p.dir||se.id}/${p.file}`:'';
 }
 function openLb(key,i){lbList=shapesFor(key);lbIdx=i;lbKey=key;
   const th=document.querySelector(`[data-lb="${key}"][data-i="${i}"] img`);
@@ -324,7 +354,7 @@ function exifRow(e){
 function metaFor(key,i){
   if(key==='picks')return C.singles[i];
   if(key==='work')return {place:C.works[0].place,exif:C.works[0].exif};
-  const se=C.series.find(x=>x.id===key);const m=(se&&se.photos[i])||{};
+  const se=findSeries(key);const m=(se&&se.photos[i])||{};
   return m;
 }
 function drawLb(){
@@ -333,7 +363,7 @@ function drawLb(){
   d.className='lb'+(panel?' panel':'');
   const body=`<img src="${WP(sh==='img'?C.works[0].img:pathFor(lbKey,lbIdx))}" ${FB} alt="">`;
   let src='';
-  if(panel){const se=m.from&&C.series.find(x=>x.id===m.from);if(se)src=`<p style="margin:20px 0 0"><a class="lbsrc" href="#s-${se.id}">${T(UI.from)}：${sname(se)} →</a></p>`}
+  if(panel){const se=m.from&&findSeries(m.from),cc=m.from&&chapterOf(m.from);if(se)src=`<p style="margin:20px 0 0"><a class="lbsrc" href="#s-${m.from}">${T(UI.from)}：${sname(se)}${cc?' · '+f(T(cc.name)):''} →</a></p>`}
   const info=panel
     ?`<div class="info"><span class="label">${L==='zh'?'精選':'Selected'} ${String(lbIdx+1).padStart(2,'0')}</span><h4>${f(T(m.title))}</h4><p class="desc">${f(T(m.text))}</p><p class="place" style="margin:0 0 16px">${f(T(m.place))}</p>${exifRow(m.exif)}${src}</div>`
     :`<div class="cap2">${m.title?`<span class="place" style="font-weight:600">${f(T(m.title))}</span>`:''}${m.caption?`<span class="place" style="color:var(--paper)">${f(T(m.caption))}</span>`:''}${m.place?`<span class="place">${f(T(m.place))}</span>`:''}${exifRow(m.exif)}</div>`;
@@ -377,11 +407,11 @@ let pendingScroll=null;
 let onSub=!!window.START;
 const ROOT=new URL('./',document.baseURI).href+(location.protocol==='file:'?'index.html':'');
 const route=()=>location.hash?location.hash.slice(1):(onSub?window.START:'home');
-function go(h){
+function goTo(h){
   if(!onSub){location.hash=h;return}
   try{history.pushState(null,'',ROOT+'#'+h);onSub=false;navigate()}catch(_){location.href=ROOT+'#'+h}
 }
-document.addEventListener('click',e=>{if(!onSub)return;const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();go(a.getAttribute('href').slice(1))},true);
+document.addEventListener('click',e=>{if(!onSub)return;const a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();goTo(a.getAttribute('href').slice(1))},true);
 addEventListener('popstate',()=>{onSub=!!window.START&&location.href.split('#')[0]!==ROOT.split('#')[0];navigate()});
 function render(){
   const h=route();lastRoute=h;
@@ -395,7 +425,7 @@ function render(){
   document.getElementById('app').innerHTML=html;
   document.documentElement.lang=L==='zh'?'zh-Hant':'en';
   const base=C.name.en+(L==='zh'?'｜攝影作品集':' · Photography');
-  const se=h.startsWith('s-')&&C.series.find(x=>x.id===h.slice(2));
+  const se=h.startsWith('s-')&&findSeries(h.slice(2));
   document.title=se?`${T(se.name)} · ${base}`:h==='series'?`${T(UI.allTitle)} · ${base}`:h==='about'?`${T(UI.about)} · ${base}`:base;
   if(C.analytics&&window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:'/'+(h==='home'?'':h),title:document.title});
   bindHero();
@@ -405,7 +435,7 @@ function render(){
 }
 document.addEventListener('click',e=>{
   const go=e.target.closest('[data-go]');
-  if(go){const id=go.dataset.go;const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});else{pendingScroll=id;go('home')}return}
+  if(go){const id=go.dataset.go;const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});else{pendingScroll=id;goTo('home')}return}
   if(e.target.closest('#lang')){L=L==='zh'?'en':'zh';try{localStorage.setItem('lang',L)}catch(_){}const y=window.scrollY;render();window.scrollTo(0,y);return}
   const vb=e.target.closest('[data-ver]');if(vb){if(+vb.dataset.ver===verIdx)return;verIdx=+vb.dataset.ver;
     const swap=()=>{const el=document.querySelector('.work');if(el)el.outerHTML=workBlock(C.works[0])};
